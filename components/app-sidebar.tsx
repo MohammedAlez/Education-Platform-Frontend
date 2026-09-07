@@ -23,7 +23,7 @@ import {
   SchoolIcon,
   UsersIcon,
 } from "lucide-react"
-import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon } from "lucide-react"
+import { GalleryVerticalEndIcon } from "lucide-react"
 
 // This is sample data.
 const data = {
@@ -45,47 +45,47 @@ const data = {
   navMain: [
     {
       title: "Overview",
-      url: "#",
+      url: "/dashboard/overview",
       icon: <LayoutDashboardIcon size={30}/>,
     },
     {
       title: "Teachers",
-      url: "#",
+      url: "/dashboard/teachers",
       icon: <GraduationCapIcon size={30}/>,
     },
     {
       title: "Students",
-      url: "#",
+      url: "/dashboard/students",
       icon: <UsersIcon size={30}/>,
     },
     {
       title: "Classes",
-      url: "#",
+      url: "/dashboard/classes",
       icon: <SchoolIcon size={30}/>,
     },
     {
       title: "Subjects",
-      url: "#",
+      url: "/dashboard/subjects",
       icon: <BookOpenIcon size={30}/>,
     },
     {
       title: "Assignments",
-      url: "#",
+      url: "/dashboard/assignments",
       icon: <ListChecksIcon size={30}/>,
     },
     {
       title: "Attendance",
-      url: "#",
+      url: "/dashboard/attendance",
       icon: <ClipboardCheckIcon size={30}/>,
     },
     {
       title: "Grades",
-      url: "#",
+      url: "/dashboard/grades",
       icon: <ActivityIcon size={30}/>,
     },
     {
       title: "Payments",
-      url: "#",
+      url: "/dashboard/payments",
       icon: <DollarSignIcon size={30}/>,
     },
   ],

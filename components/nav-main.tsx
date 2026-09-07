@@ -1,5 +1,6 @@
 "use client"
 
+import { usePathname } from "next/navigation"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -17,18 +18,29 @@ export function NavMain({
     icon?: React.ReactNode
   }[]
 }) {
+  const pathname = usePathname()
+
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => (
-          <SidebarMenuItem key={item.title} className="data-[active=true]:bg-accent data-[active=true]:text-accent-foreground">
-            <SidebarMenuButton render={<a href={item.url} />} tooltip={item.title} className='p-6'>
-              {item.icon}
-              <span className='text-base'>{item.title}</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        ))}
+        {items.map((item) => {
+          const isActive = pathname === item.url
+
+          return (
+            <SidebarMenuItem key={item.title}>
+              <SidebarMenuButton
+                isActive={isActive}
+                render={<a href={item.url} />}
+                tooltip={item.title}
+                className="p-6"
+              >
+                {item.icon}
+                <span className="text-base">{item.title}</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          )
+        })}
       </SidebarMenu>
     </SidebarGroup>
   )
