@@ -1,6 +1,7 @@
 // app/lib/api.ts
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+import { createSession, destroySession } from './session'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5500/api'
 
@@ -8,7 +9,6 @@ export async function fetchWithAuth(endpoint: string, options: RequestInit = {})
   const cookieStore = await cookies()
   let accessToken = cookieStore.get('accessToken')?.value
 
-  // Attach Current Access Token
   const headers = new Headers(options.headers)
   if (accessToken) {
     headers.set('Authorization', `Bearer ${accessToken}`)
@@ -19,23 +19,23 @@ export async function fetchWithAuth(endpoint: string, options: RequestInit = {})
     headers,
   })
 
-  // If Token Expired (401), Attempt Token Refresh
   if (response.status === 401) {
-    const refreshSuccess = await refreshAccessToken()
+    const refreshSuccess = await refreshTokens()
 
     if (refreshSuccess) {
-      // Retry original request with new access token
-      const newAccessToken = cookieStore.get('accessToken')?.value
-      headers.set('Authorization', `Bearer ${newAccessToken}`)
+      const updatedCookieStore = await cookies()
+      const newAccessToken = updatedCookieStore.get('accessToken')?.value
+
+      if (newAccessToken) {
+        headers.set('Authorization', `Bearer ${newAccessToken}`)
+      }
 
       response = await fetch(`${API_BASE_URL}${endpoint}`, {
         ...options,
         headers,
       })
     } else {
-      // Refresh failed or refresh token expired -> Clear cookies & redirect
-      cookieStore.delete('accessToken')
-      cookieStore.delete('refreshToken')
+      await destroySession()
       redirect('/login')
     }
   }
@@ -43,7 +43,30 @@ export async function fetchWithAuth(endpoint: string, options: RequestInit = {})
   return response
 }
 
-async function refreshAccessToken(): Promise<boolean> {
+// --- Single-flight lock for refreshTokens() ---------------------------------
+// Problem this solves: if two Server Components on the same page both call
+// fetchWithAuth() while the access token is expired, both would previously
+// hit /auth/refresh independently. Since refresh tokens are rotated, the
+// second call sends an already-invalidated token and fails, logging the user
+// out even though their session was valid a moment earlier.
+//
+// This module-scoped promise dedupes concurrent refresh calls that happen
+// within the same request/render. It does NOT protect against two entirely
+// separate concurrent HTTP requests hitting the server at the same instant —
+// for that, ask your API team whether /auth/refresh tolerates a short reuse
+// grace period on the just-rotated refresh token.
+let refreshPromise: Promise<boolean> | null = null
+
+async function refreshTokens(): Promise<boolean> {
+  if (refreshPromise) return refreshPromise
+
+  refreshPromise = doRefresh()
+  const result = await refreshPromise
+  refreshPromise = null
+  return result
+}
+
+async function doRefresh(): Promise<boolean> {
   const cookieStore = await cookies()
   const refreshToken = cookieStore.get('refreshToken')?.value
 
@@ -58,16 +81,10 @@ async function refreshAccessToken(): Promise<boolean> {
 
     if (!res.ok) return false
 
-    const data = await res.json()
-    
-    // Update Cookies with New Access Token
-    cookieStore.set('accessToken', data.accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      path: '/',
-    })
+    const result = await res.json()
+    const { accessToken, refreshToken: newRefreshToken } = result.data
 
+    await createSession(accessToken, newRefreshToken)
     return true
   } catch (error) {
     return false

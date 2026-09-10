@@ -13,13 +13,13 @@ import {
   FieldSeparator,
 } from '@/components/ui/field'
 import { Input } from '@/components/ui/input'
-import { login } from '@/app/actions/auth'
+import { loginAction } from '@/app/actions/auth'
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<'div'>) {
-  const [state, action, pending] = useActionState(login, undefined)
+  const [state, action, pending] = useActionState(loginAction, undefined)
 
   return (
     <div className={cn('flex flex-col gap-6', className)} {...props}>

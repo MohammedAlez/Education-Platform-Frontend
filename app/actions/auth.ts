@@ -1,15 +1,14 @@
+// app/actions/auth.ts
 'use server'
 
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { LoginFormSchema, FormState } from '@/lib/definitions'
-import { createSession, deleteSession, getSession } from '@/lib/session'
-import { cookies } from 'next/headers'
+import { createSession, destroySession } from '@/lib/session'
 
-const API_LOGIN_URL = 'http://localhost:5500/api/auth/login'
-const API_LOGOUT_URL = 'http://localhost:3500/api/auth/logout'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5500/api'
 
-export async function login(state: FormState, formData: FormData): Promise<FormState> {
-  // 1. Validate input fields
+export async function loginAction(state: FormState, formData: FormData): Promise<FormState> {
   const validatedFields = LoginFormSchema.safeParse({
     email: formData.get('email'),
     password: formData.get('password'),
@@ -21,34 +20,29 @@ export async function login(state: FormState, formData: FormData): Promise<FormS
     }
   }
 
-  const { email, password } = validatedFields.data
-
   try {
-    // 2. Call backend login API
-    const response = await fetch(API_LOGIN_URL, {
+    const response = await fetch(`${API_BASE_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify(validatedFields.data),
     })
 
     const result = await response.json()
 
-    if (!response.ok || !result.data) {
+    if (!response.ok) {
       return {
         message: result.message || 'Invalid credentials. Please try again.',
       }
     }
 
-    // 3. Extract tokens from nested data object and create session
     const { accessToken, refreshToken } = result.data
     await createSession(accessToken, refreshToken)
   } catch (error) {
     return {
-      message: 'Server error. Please try again later.',
+      message: 'Server connection error. Please try again later.',
     }
   }
 
-  // 4. Redirect user after session creation (outside try/catch)
   redirect('/dashboard')
 }
 
@@ -57,25 +51,21 @@ export async function logoutAction() {
   const accessToken = cookieStore.get('accessToken')?.value
   const refreshToken = cookieStore.get('refreshToken')?.value
 
-  try {
-    if (refreshToken) {
-      await fetch(API_LOGOUT_URL, {
+  if (refreshToken && accessToken) {
+    try {
+      await fetch(`${API_BASE_URL}/auth/logout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({ refreshToken }),
       })
+    } catch (error) {
+      console.error('Logout error:', error)
     }
-  } catch (error) {
-    console.error('Logout error:', error)
-  } finally {
-    // Clear cookies regardless of API success
-    cookieStore.delete('accessToken')
-    cookieStore.delete('refreshToken')
   }
 
-  // MUST BE OUTSIDE TRY/CATCH
+  await destroySession()
   redirect('/login')
 }

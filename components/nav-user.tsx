@@ -30,6 +30,7 @@ import {
   BellIcon,
   LogOutIcon,
 } from "lucide-react"
+import { useCurrentUser } from "@/my-components/user-provider"
 
 export function NavUser({
   user,
@@ -49,6 +50,8 @@ export function NavUser({
     })
   }
 
+  const currentUser = useCurrentUser()
+  console.log("current user in NavUser:", currentUser)
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -63,8 +66,8 @@ export function NavUser({
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">{user.name}</span>
-              <span className="truncate text-xs">{user.email}</span>
+              <span className="truncate font-medium">{'john deo'}</span>
+              <span className="truncate text-xs">{currentUser?.email}</span>
             </div>
             <ChevronsUpDownIcon className="ml-auto size-4" />
           </DropdownMenuTrigger>
@@ -82,13 +85,13 @@ export function NavUser({
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-medium">{user.name}</span>
-                    <span className="truncate text-xs">{user.email}</span>
+                    <span className="truncate font-medium">{currentUser?.email}</span>
+                    <span className="truncate text-xs">{currentUser?.email}</span>
                   </div>
                 </div>
               </DropdownMenuLabel>
             </DropdownMenuGroup>
-            <DropdownMenuSeparator />
+            {/* <DropdownMenuSeparator />
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <SparklesIcon />
@@ -109,7 +112,7 @@ export function NavUser({
                 <BellIcon />
                 Notifications
               </DropdownMenuItem>
-            </DropdownMenuGroup>
+            </DropdownMenuGroup> */}
             <DropdownMenuSeparator />
             <DropdownMenuItem 
               onClick={handleLogout} 
