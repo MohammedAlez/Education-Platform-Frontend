@@ -23,6 +23,7 @@ import {
   SchoolIcon,
   UsersIcon,
   SettingsIcon,
+  UserIcon,
 } from "lucide-react"
 import { GalleryVerticalEndIcon } from "lucide-react"
 
@@ -42,64 +43,82 @@ const data = {
     {
       title: "Overview",
       url: "/dashboard/overview",
-      icon: <LayoutDashboardIcon size={30}/>,
-      roles: ["ADMIN", "TEACHER", "STUDENT"], // Example roles for access control
+      icon: <LayoutDashboardIcon size={30} />,
+      roles: ["ADMIN", "TEACHER", "STUDENT"],
     },
     {
       title: "Teachers",
       url: "/dashboard/teachers",
-      icon: <GraduationCapIcon size={30}/>,
-      roles: ["ADMIN"], // Example roles for access control
+      icon: <GraduationCapIcon size={30} />,
+      roles: ["ADMIN"],
+    },
+    {
+      title: "My Students",
+      url: "/dashboard/students",
+      icon: <UsersIcon size={30} />,
+      roles: ["TEACHER"],
     },
     {
       title: "Students",
       url: "/dashboard/students",
-      icon: <UsersIcon size={30}/>,
-      roles: ["ADMIN"], // Example roles for access control
+      icon: <UsersIcon size={30} />,
+      roles: ["ADMIN"],
+    },
+    {
+      title: "My Classes",
+      url: "/dashboard/classes",
+      icon: <SchoolIcon size={30} />,
+      roles: ["TEACHER"],
     },
     {
       title: "Classes",
       url: "/dashboard/classes",
-      icon: <SchoolIcon size={30}/>,
-      roles: ["ADMIN"], // Example roles for access control
+      icon: <SchoolIcon size={30} />,
+      roles: ["ADMIN"],
     },
     {
       title: "Subjects",
       url: "/dashboard/subjects",
-      icon: <BookOpenIcon size={30}/>,
-      roles: ["ADMIN"], // Example roles for access control
+      icon: <BookOpenIcon size={30} />,
+      roles: ["ADMIN"],
     },
     {
       title: "Assignments",
       url: "/dashboard/assignments",
-      icon: <ListChecksIcon size={30}/>,
-      roles: ["ADMIN"], // Example roles for access control
+      icon: <ListChecksIcon size={30} />,
+      roles: ["ADMIN"],
     },
     {
       title: "Attendance",
       url: "/dashboard/attendance",
-      icon: <ClipboardCheckIcon size={30}/>,
-      roles: ["ADMIN"], // Example roles for access control
+      icon: <ClipboardCheckIcon size={30} />,
+      roles: ["ADMIN", "TEACHER"],
     },
     {
       title: "Grades",
       url: "/dashboard/grades",
-      icon: <ActivityIcon size={30}/>,
-      roles: ["ADMIN"], // Example roles for access control
+      icon: <ActivityIcon size={30} />,
+      roles: ["ADMIN", "TEACHER"],
     },
     {
       title: "Payments",
       url: "/dashboard/payments",
-      icon: <DollarSignIcon size={30}/>,
-      roles: ["ADMIN"], // Example roles for access control
+      icon: <DollarSignIcon size={30} />,
+      roles: ["ADMIN"],
     },
     {
       title: "Settings",
       url: "/dashboard/settings",
-      icon: <SettingsIcon size={30}/>,
-      roles: ["ADMIN"], // Example roles for access control
+      icon: <SettingsIcon size={30} />,
+      roles: ["ADMIN"],
     },
-  ],
+    {
+      title: "My Account",
+      url: "/dashboard/account",
+      icon: <UserIcon size={30} />,
+      roles: ["TEACHER", "STUDENT"],
+    },
+  ]
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {

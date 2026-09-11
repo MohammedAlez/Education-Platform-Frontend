@@ -1,9 +1,26 @@
-import { AttendanceFilters } from "./components/attendance-filters"
-import { AttendanceStats } from "./components/attendance-stats"
-import { ClassBreakdownCard } from "./components/class-breakdown-card"
-import { StudentAttendanceTable } from "./components/student-attendance-table"
+import { getCurrentUser } from "@/lib/user"
+import { AttendanceFilters } from "./admin-components/attendance-filters"
+import { AttendanceStats } from "./admin-components/attendance-stats"
+import { ClassBreakdownCard } from "./admin-components/class-breakdown-card"
+import { StudentAttendanceTable } from "./admin-components/student-attendance-table"
+import { Role } from "@/lib/rbac"
+import { AttendanceSheet } from "./teacher-components/attendance-sheet"
 
-export default function AttendancePage() {
+export default async function AttendancePage() {
+  const currentUser = await getCurrentUser()
+      // const userRole = currentUser?.role 
+      const userRole:Role = "TEACHER"
+    
+      if (userRole === "ADMIN") {
+        return <AdminAttendancePage />
+      }else if (userRole === "TEACHER") {
+        return <TeacherClassesPage />
+      }
+      return <div>Access Denied</div>
+}
+
+
+function AdminAttendancePage() {
   return (
     <div className="space-y-6 p-2">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -21,6 +38,21 @@ export default function AttendancePage() {
       <ClassBreakdownCard />
 
       <StudentAttendanceTable />
+    </div>
+  )
+}
+
+function TeacherClassesPage() {
+  return (
+    <div className="space-y-6 p-2">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight">Attendance</h1>
+        <p className="text-sm text-muted-foreground">
+          Record and manage daily student session attendance.
+        </p>
+      </div>
+
+      <AttendanceSheet />
     </div>
   )
 }

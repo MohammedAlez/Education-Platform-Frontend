@@ -1,10 +1,25 @@
 import { Button } from "@/components/ui/button"
-import { StudentStats } from "./components/student-stats"
-import { StudentFilters } from "./components/student-filters"
-import { StudentTable } from "./components/student-table"
+import { StudentStats } from "./admin-components/student-stats"
+import { StudentFilters } from "./admin-components/student-filters"
+import { StudentTable } from "./admin-components/student-table"
 import { Download, UserPlus } from "lucide-react"
+import { getCurrentUser } from "@/lib/user"
+import { Role } from "@/lib/rbac"
+import { TeacherStudentsTable } from "./teacher-components/teacher-students-table"
 
-export default function StudentsPage() {
+export default async function StudentsPage() {
+  const currentUser = await getCurrentUser()
+  // const userRole = currentUser?.role 
+  const userRole:Role = "TEACHER"
+
+  if (userRole === "ADMIN") {
+    return <AdminStudentsPage />
+  }else if (userRole === "TEACHER") {
+    return <TeacherStudentsPage />
+  }
+  return <div>Access Denied</div>
+}
+function AdminStudentsPage() {
   return (
     <div className="space-y-6 p-2 py-1">
       {/* Header */}
@@ -35,6 +50,21 @@ export default function StudentsPage() {
         <StudentFilters />
         <StudentTable />
       </div>
+    </div>
+  )
+}
+
+function TeacherStudentsPage() {
+  return (
+    <div className="space-y-6 p-6">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight">My Students</h1>
+        <p className="text-sm text-muted-foreground">
+          View roster performance, attendance rates, and grade histories for students in your classes.
+        </p>
+      </div>
+
+      <TeacherStudentsTable />
     </div>
   )
 }

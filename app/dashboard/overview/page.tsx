@@ -1,11 +1,31 @@
-import { KpiCards } from "./components/kpi-cards"
-import { AttendanceOverview } from "./components/attendance-overview"
-import { AttendanceChart } from "./components/attendance-chart"
-import { RecentStudents } from "./components/recent-students"
-import { RecentPayments } from "./components/recent-payments"
-import { QuickActions } from "./components/quick-actions"
+import { KpiCards } from "./admin-components/kpi-cards"
+import { AttendanceOverview } from "./admin-components/attendance-overview"
+import { AttendanceChart } from "./admin-components/attendance-chart"
+import { RecentStudents } from "./admin-components/recent-students"
+import { RecentPayments } from "./admin-components/recent-payments"
+import { QuickActions } from "./admin-components/quick-actions"
+import { getCurrentUser } from "@/lib/user"
+import { RecentGradesCard } from "./teacher-components/recent-grades-card"
+import { PendingAttendanceCard } from "./teacher-components/pending-attendance-card"
+import { TodaysClasses } from "./teacher-components/todays-classes"
+import { TeacherStats } from "./teacher-components/teacher-stats"
+import { Role } from "@/lib/rbac"
 
-export default function AdminDashboardPage() {
+export default async function Overview() {
+  const currentUser = await getCurrentUser()
+  // const userRole = currentUser?.role 
+  const userRole:Role = "TEACHER"
+
+  if (userRole === "ADMIN") {
+    return <AdminDashboardPage />
+  }else if (userRole === "TEACHER") {
+    return <TeacherDashboardPage />
+  }
+  return <div>Access Denied</div>
+}
+
+
+function AdminDashboardPage() {
   return (
     <div className="space-y-6 p-3">
       {/* Welcome Header */}
@@ -41,4 +61,32 @@ export default function AdminDashboardPage() {
       </div>
     </div>
   )
+}
+
+function TeacherDashboardPage() {
+
+  return (
+    <div className="space-y-6 p-2">
+      <div>
+        <h1 className="text-2xl font-bold tracking-tight">Good morning, Ahmed 👋</h1>
+        <p className="text-sm text-muted-foreground">
+          Here's your teaching overview.
+        </p>
+      </div>
+
+      <TeacherStats />
+
+      <div className="grid gap-6 lg:grid-cols-2">
+        <TodaysClasses />
+        <PendingAttendanceCard />
+      </div>
+
+      <RecentGradesCard />
+    </div>
+  )
+
+}
+
+function StudentDashboardPage() {
+
 }
