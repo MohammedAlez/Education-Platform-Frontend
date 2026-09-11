@@ -16,7 +16,7 @@ export default function AccountPage() {
   }
 
   return (
-    <div className="space-y-6 p-2 ">
+    <div className="space-y-6 p-2">
       <div>
         <h1 className="text-2xl font-bold tracking-tight">My Account</h1>
         <p className="text-sm text-muted-foreground">

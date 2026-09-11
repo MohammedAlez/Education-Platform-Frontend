@@ -5,18 +5,21 @@ import { ClassGrid } from "./admin-components/class-card"
 import { PlusCircle } from "lucide-react"
 import { getCurrentUser } from "@/lib/user"
 import { Role } from "@/lib/rbac"
+import { ClassHeader } from "./student-components/class-header"
+import { ClassSubjects } from "./student-components/class-subjects"
+import { ClassTeachers } from "./student-components/class-teachers"
 
 export default async function Classes() {
   const currentUser = await getCurrentUser()
     // const userRole = currentUser?.role 
-    const userRole:Role = "TEACHER"
+    const userRole:Role = "STUDENT"
   
     if (userRole === "ADMIN") {
       return <AdminClassesPage />
     }else if (userRole === "TEACHER") {
       return <TeacherClassesPage />
     }
-    return <div>Access Denied</div>
+    return <StudentMyClassPage />
 }
 
 function AdminClassesPage() {
@@ -60,4 +63,14 @@ function TeacherClassesPage() {
     </div>
   )
 
+}
+
+function StudentMyClassPage() {
+  return (
+    <div className="space-y-6 p-2">
+      <ClassHeader className="Class A" studentCount={28} />
+      <ClassSubjects />
+      <ClassTeachers />
+    </div>
+  )
 }

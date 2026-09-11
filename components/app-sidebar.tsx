@@ -65,6 +65,12 @@ const data = {
       roles: ["ADMIN"],
     },
     {
+      title: "My Class",
+      url: "/dashboard/classes",
+      icon: <SchoolIcon size={30} />,
+      roles: ["STUDENT"],
+    },
+    {
       title: "My Classes",
       url: "/dashboard/classes",
       icon: <SchoolIcon size={30} />,
@@ -75,6 +81,12 @@ const data = {
       url: "/dashboard/classes",
       icon: <SchoolIcon size={30} />,
       roles: ["ADMIN"],
+    },
+    {
+      title: "My Subjects",
+      url: "/dashboard/subjects",
+      icon: <BookOpenIcon size={30} />,
+      roles: ["STUDENT"],
     },
     {
       title: "Subjects",
@@ -89,10 +101,22 @@ const data = {
       roles: ["ADMIN"],
     },
     {
+      title: "My Attendance",
+      url: "/dashboard/attendance",
+      icon: <ClipboardCheckIcon size={30} />,
+      roles: ["STUDENT"],
+    },
+    {
       title: "Attendance",
       url: "/dashboard/attendance",
       icon: <ClipboardCheckIcon size={30} />,
       roles: ["ADMIN", "TEACHER"],
+    },
+    {
+      title: "My Grades",
+      url: "/dashboard/grades",
+      icon: <ActivityIcon size={30} />,
+      roles: ["STUDENT"],
     },
     {
       title: "Grades",
@@ -116,7 +140,13 @@ const data = {
       title: "My Account",
       url: "/dashboard/account",
       icon: <UserIcon size={30} />,
-      roles: ["TEACHER", "STUDENT"],
+      roles: ["TEACHER",],
+    },
+    {
+      title: "My Account",
+      url: "/dashboard/my-profile",
+      icon: <UserIcon size={30} />,
+      roles: ["STUDENT"],
     },
   ]
 }

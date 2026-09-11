@@ -1,10 +1,24 @@
 import { Button } from "@/components/ui/button"
-import { SubjectStats } from "./components/subject-stats"
-import { SubjectFilters } from "./components/subject-filters"
-import { SubjectGrid } from "./components/subject-card"
+import { SubjectStats } from "./admin-components/subject-stats"
+import { SubjectFilters } from "./admin-components/subject-filters"
+import { SubjectGrid } from "./admin-components/subject-card"
 import { PlusCircle } from "lucide-react"
+import { getCurrentUser } from "@/lib/user"
+import { Role } from "@/lib/rbac"
+import StudentSubjectsPage from "./student-components/main-page"
 
-export default function SubjectsPage() {
+export default async function SubjectsPage() {
+  const currentUser = await getCurrentUser()
+      // const userRole = currentUser?.role 
+      const userRole:Role = "STUDENT"
+    
+      if (userRole === "ADMIN") {
+        return <AdminSubjectsPage />
+      }
+      return <StudentSubjectsPage />
+}
+
+function AdminSubjectsPage() {
   return (
     <div className="space-y-6 p-2">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -29,3 +43,4 @@ export default function SubjectsPage() {
     </div>
   )
 }
+

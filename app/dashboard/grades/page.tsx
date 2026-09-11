@@ -4,18 +4,19 @@ import { GradeStats } from "./admin-components/grade-stats"
 import { GradeTable } from "./admin-components/grade-table"
 import { Role } from "@/lib/rbac"
 import { GradeEntrySheet } from "./teacher-components/grade-entry-sheet"
+import StudentGradesPage from "./student-components/main-page"
 
 export default async function GradesPage() {
   const currentUser = await getCurrentUser()
       // const userRole = currentUser?.role 
-      const userRole:Role = "TEACHER"
+      const userRole:Role = "STUDENT"
     
       if (userRole === "ADMIN") {
         return <AdminGradesPage />
       }else if (userRole === "TEACHER") {
         return <TeacherClassesPage />
       }
-      return <div>Access Denied</div>
+      return <StudentGradesPage />
 }
 function AdminGradesPage() {
   return (

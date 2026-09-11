@@ -5,18 +5,19 @@ import { ClassBreakdownCard } from "./admin-components/class-breakdown-card"
 import { StudentAttendanceTable } from "./admin-components/student-attendance-table"
 import { Role } from "@/lib/rbac"
 import { AttendanceSheet } from "./teacher-components/attendance-sheet"
+import StudentAttendancePage from "./student-components/main-page"
 
 export default async function AttendancePage() {
   const currentUser = await getCurrentUser()
       // const userRole = currentUser?.role 
-      const userRole:Role = "TEACHER"
+      const userRole:Role = "STUDENT"
     
       if (userRole === "ADMIN") {
         return <AdminAttendancePage />
       }else if (userRole === "TEACHER") {
         return <TeacherClassesPage />
       }
-      return <div>Access Denied</div>
+      return <StudentAttendancePage />
 }
 
 
