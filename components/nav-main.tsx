@@ -8,6 +8,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { useCurrentUser } from "@/my-components/user-provider"
 
 export function NavMain({
   items,
@@ -15,11 +16,19 @@ export function NavMain({
   items: {
     title: string
     url: string
-    icon?: React.ReactNode
+    icon?: React.ReactNode, 
+    roles: string[] // Add a roles property to specify which roles can access this item
   }[]
 }) {
   const pathname = usePathname()
 
+  const currentUser = useCurrentUser() 
+  
+  console.log(currentUser) // Log the current user object to the console
+  
+  // const userRole = 'STUDENT' 
+  const userRole = currentUser?.role!
+  
   return (
     <SidebarGroup>
       <SidebarGroupLabel>Platform</SidebarGroupLabel>
@@ -27,6 +36,11 @@ export function NavMain({
         {items.map((item) => {
           const isActive = pathname === item.url
 
+          // Check if the user has access to the item based on their role
+          const hasAccess = !item.roles || item.roles.includes(userRole)
+          if (!hasAccess) {
+            return null // Skip rendering this item if the user doesn't have access
+          }
           return (
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton

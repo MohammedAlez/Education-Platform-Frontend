@@ -22,16 +22,12 @@ import {
   ListChecksIcon,
   SchoolIcon,
   UsersIcon,
+  SettingsIcon,
 } from "lucide-react"
 import { GalleryVerticalEndIcon } from "lucide-react"
 
 // This is sample data.
 const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
   teams: [
     {
       name: "Acme Inc.",
@@ -59,42 +55,48 @@ const data = {
       title: "Students",
       url: "/dashboard/students",
       icon: <UsersIcon size={30}/>,
-      roles: ["ADMIN", "TEACHER"], // Example roles for access control
+      roles: ["ADMIN"], // Example roles for access control
     },
     {
       title: "Classes",
       url: "/dashboard/classes",
       icon: <SchoolIcon size={30}/>,
-      roles: ["ADMIN", "TEACHER"], // Example roles for access control
+      roles: ["ADMIN"], // Example roles for access control
     },
     {
       title: "Subjects",
       url: "/dashboard/subjects",
       icon: <BookOpenIcon size={30}/>,
-      roles: ["ADMIN", "TEACHER", "STUDENT"], // Example roles for access control
+      roles: ["ADMIN"], // Example roles for access control
     },
     {
       title: "Assignments",
       url: "/dashboard/assignments",
       icon: <ListChecksIcon size={30}/>,
-      roles: ["ADMIN", "TEACHER"], // Example roles for access control
+      roles: ["ADMIN"], // Example roles for access control
     },
     {
       title: "Attendance",
       url: "/dashboard/attendance",
       icon: <ClipboardCheckIcon size={30}/>,
-      roles: ["ADMIN", "TEACHER"], // Example roles for access control
+      roles: ["ADMIN"], // Example roles for access control
     },
     {
       title: "Grades",
       url: "/dashboard/grades",
       icon: <ActivityIcon size={30}/>,
-      roles: ["ADMIN", "TEACHER", "STUDENT"], // Example roles for access control
+      roles: ["ADMIN"], // Example roles for access control
     },
     {
       title: "Payments",
       url: "/dashboard/payments",
       icon: <DollarSignIcon size={30}/>,
+      roles: ["ADMIN"], // Example roles for access control
+    },
+    {
+      title: "Settings",
+      url: "/dashboard/settings",
+      icon: <SettingsIcon size={30}/>,
       roles: ["ADMIN"], // Example roles for access control
     },
   ],
@@ -110,7 +112,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
