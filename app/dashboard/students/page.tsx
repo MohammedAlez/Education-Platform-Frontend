@@ -9,8 +9,8 @@ import { TeacherStudentsTable } from "./teacher-components/teacher-students-tabl
 
 export default async function StudentsPage() {
   const currentUser = await getCurrentUser()
-  // const userRole = currentUser?.role 
-  const userRole:Role = "TEACHER"
+  const userRole = currentUser?.role 
+  // const userRole:Role = "TEACHER"
 
   if (userRole === "ADMIN") {
     return <AdminStudentsPage />

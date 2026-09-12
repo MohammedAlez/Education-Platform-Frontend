@@ -17,8 +17,8 @@ import { RecentGradesCard as StudentRecentGradesCard } from "./teacher-component
 
 export default async function Overview() {
   const currentUser = await getCurrentUser()
-  // const userRole = currentUser?.role 
-  const userRole:Role = "STUDENT"
+  const userRole = currentUser?.role 
+  // const userRole:Role = "STUDENT"
 
   if (userRole === "ADMIN") {
     return <AdminDashboardPage />

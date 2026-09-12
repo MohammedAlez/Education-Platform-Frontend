@@ -8,8 +8,8 @@ import StudentGradesPage from "./student-components/main-page"
 
 export default async function GradesPage() {
   const currentUser = await getCurrentUser()
-      // const userRole = currentUser?.role 
-      const userRole:Role = "STUDENT"
+      const userRole = currentUser?.role 
+      // const userRole:Role = "STUDENT"
     
       if (userRole === "ADMIN") {
         return <AdminGradesPage />

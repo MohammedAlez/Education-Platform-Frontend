@@ -26,9 +26,9 @@ export function NavMain({
   
   console.log(currentUser) // Log the current user object to the console
   
-  const userRole = 'STUDENT' 
+  // const userRole = 'STUDENT' 
   // const userRole = 'TEACHER' 
-  // const userRole = currentUser?.role!
+  const userRole = currentUser?.role!
   
   return (
     <SidebarGroup>

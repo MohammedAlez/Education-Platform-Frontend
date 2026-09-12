@@ -9,8 +9,8 @@ import StudentAttendancePage from "./student-components/main-page"
 
 export default async function AttendancePage() {
   const currentUser = await getCurrentUser()
-      // const userRole = currentUser?.role 
-      const userRole:Role = "STUDENT"
+      const userRole = currentUser?.role 
+      // const userRole:Role = "STUDENT"
     
       if (userRole === "ADMIN") {
         return <AdminAttendancePage />
