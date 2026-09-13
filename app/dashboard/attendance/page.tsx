@@ -1,11 +1,9 @@
-import { getCurrentUser } from "@/lib/user"
-import { AttendanceFilters } from "./admin-components/attendance-filters"
-import { AttendanceStats } from "./admin-components/attendance-stats"
-import { ClassBreakdownCard } from "./admin-components/class-breakdown-card"
-import { StudentAttendanceTable } from "./admin-components/student-attendance-table"
-import { Role } from "@/lib/rbac"
+import { getCurrentUser, requireRole } from "@/lib/user"
 import { AttendanceSheet } from "./teacher-components/attendance-sheet"
 import StudentAttendancePage from "./student-components/main-page"
+import { fetchWithAuth } from "@/lib/api"
+import { AttendanceOverviewGrid } from "./admin-components/attendance-overview-grid"
+import { AttendanceRecord } from "@/types/attendance"
 
 export default async function AttendancePage() {
   const currentUser = await getCurrentUser()
@@ -21,24 +19,24 @@ export default async function AttendancePage() {
 }
 
 
-function AdminAttendancePage() {
+async function AdminAttendancePage() {
+  await requireRole("ADMIN")
+
+  let initialRecords: AttendanceRecord[] = [] 
+
+  try {
+    const res = await fetchWithAuth("/attendance")
+    if (res.ok) {
+      const json = await res.json()
+      initialRecords = Array.isArray(json) ? json : json.data || []
+    }
+  } catch (error) {
+    console.error("Failed to fetch attendance records:", error)
+  }
+
   return (
-    <div className="space-y-6 p-2">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Attendance Overview</h1>
-          <p className="text-sm text-muted-foreground">
-            Monitor school-wide attendance rates, class metrics, and student logs.
-          </p>
-        </div>
-        <AttendanceFilters />
-      </div>
-
-      <AttendanceStats />
-
-      <ClassBreakdownCard />
-
-      <StudentAttendanceTable />
+    <div className="p-6">
+      <AttendanceOverviewGrid initialRecords={initialRecords} />
     </div>
   )
 }

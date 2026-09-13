@@ -1,27 +1,26 @@
-import { AssignmentStats } from "./components/assignment-stats"
-import { AssignmentFilters } from "./components/assignment-filters"
-import { AssignmentTable } from "./components/assignment-table"
-import { CreateAssignmentSheet } from "./components/create-assignment-sheet"
+import { fetchWithAuth } from "@/lib/api"
+import { requireRole } from "@/lib/user"
+import { TeachingAssignmentsGrid } from "./components/teaching-assignments-grid"
+import { TeachingAssignment } from "@/types/class"
 
-export default function TeachingAssignmentsPage() {
+export default async function AdminTeachingAssignmentsPage() {
+  await requireRole("ADMIN")
+
+  let initialAssignments: TeachingAssignment[] = []
+
+  try {
+    const res = await fetchWithAuth("/teaching-assignments")
+    if (res.ok) {
+      const json = await res.json()
+      initialAssignments = Array.isArray(json) ? json : json.data || []
+    }
+  } catch (error) {
+    console.error("Failed to fetch teaching assignments:", error)
+  }
+
   return (
-    <div className="space-y-6 p-2">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Teaching Assignments</h1>
-          <p className="text-sm text-muted-foreground">
-            Manage allocations linking teachers to subjects and target classes.
-          </p>
-        </div>
-        <CreateAssignmentSheet />
-      </div>
-
-      <AssignmentStats />
-
-      <div className="space-y-4">
-        <AssignmentFilters />
-        <AssignmentTable />
-      </div>
+    <div className="p-6">
+      <TeachingAssignmentsGrid initialAssignments={initialAssignments} />
     </div>
   )
 }
