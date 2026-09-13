@@ -1,25 +1,26 @@
-import { PaymentStats } from "./components/payment-stats"
-import { PaymentFilters } from "./components/payment-filters"
-import { PaymentTable } from "./components/payment-table"
+import { fetchWithAuth } from "@/lib/api"
+import { requireRole } from "@/lib/user"
+import { PaymentsGrid } from "./components/payments-grid"
+import { PaymentItem } from "@/types/payment"
 
-export default function PaymentsPage() {
+export default async function AdminPaymentsPage() {
+  await requireRole("ADMIN")
+
+  let initialPayments: PaymentItem[] = []
+
+  try {
+    const res = await fetchWithAuth("/payments")
+    if (res.ok) {
+      const json = await res.json()
+      initialPayments = Array.isArray(json) ? json : json.data || []
+    }
+  } catch (error) {
+    console.error("Failed to fetch payments:", error)
+  }
+
   return (
-    <div className="space-y-6 p-2">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Payments</h1>
-          <p className="text-sm text-muted-foreground">
-            Monitor and manually update tuition fees, pending invoices, and balances.
-          </p>
-        </div>
-      </div>
-
-      <PaymentStats />
-
-      <div className="space-y-4">
-        <PaymentFilters />
-        <PaymentTable />
-      </div>
+    <div className="p-6">
+      <PaymentsGrid initialPayments={initialPayments} />
     </div>
   )
 }
