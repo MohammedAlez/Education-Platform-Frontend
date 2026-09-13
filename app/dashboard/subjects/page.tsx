@@ -1,11 +1,9 @@
-import { Button } from "@/components/ui/button"
-import { SubjectStats } from "./admin-components/subject-stats"
-import { SubjectFilters } from "./admin-components/subject-filters"
-import { SubjectGrid } from "./admin-components/subject-card"
-import { PlusCircle } from "lucide-react"
-import { getCurrentUser } from "@/lib/user"
+import { getCurrentUser, requireRole } from "@/lib/user"
 import { Role } from "@/lib/rbac"
 import StudentSubjectsPage from "./student-components/main-page"
+import { SubjectItem } from "@/types/subject"
+import { fetchWithAuth } from "@/lib/api"
+import { SubjectsGrid } from "./admin-components/subjects-grid"
 
 export default async function SubjectsPage() {
   const currentUser = await getCurrentUser()
@@ -18,28 +16,24 @@ export default async function SubjectsPage() {
       return <StudentSubjectsPage />
 }
 
-function AdminSubjectsPage() {
+async function AdminSubjectsPage() {
+  await requireRole("ADMIN")
+
+  let initialSubjects: SubjectItem[] = []
+
+  try {
+    const res = await fetchWithAuth("/subjects")
+    if (res.ok) {
+      const json = await res.json()
+      initialSubjects = Array.isArray(json) ? json : json.data || []
+    }
+  } catch (error) {
+    console.error("Failed to fetch subjects:", error)
+  }
+
   return (
-    <div className="space-y-6 p-2">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Subjects</h1>
-          <p className="text-sm text-muted-foreground">
-            Manage academic subjects and curriculum allocations.
-          </p>
-        </div>
-        <Button className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90">
-          <PlusCircle className="h-4 w-4" />
-          Add Subject
-        </Button>
-      </div>
-
-      <SubjectStats />
-
-      <div className="space-y-4">
-        <SubjectFilters />
-        <SubjectGrid />
-      </div>
+    <div className="p-6">
+      <SubjectsGrid initialSubjects={initialSubjects} />
     </div>
   )
 }

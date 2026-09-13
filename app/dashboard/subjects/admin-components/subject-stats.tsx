@@ -1,61 +1,74 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { BookOpen, GraduationCap, School } from "lucide-react"
+import { BookOpen, Building2, GraduationCap } from "lucide-react"
+import { SubjectItem } from "@/types/subject"
 
-const statsData = [
-  {
-    title: "Total Subjects",
-    value: "8",
-    icon: BookOpen,
-    bgColor: "bg-amber-50/60 dark:bg-amber-950/20",
-    borderColor: "border-amber-100 dark:border-amber-900/40",
-    iconColor: "text-amber-500 dark:text-amber-400",
-  },
-  {
-    title: "Assigned Classes",
-    value: "12",
-    icon: School,
-    bgColor: "bg-purple-50/60 dark:bg-purple-950/20",
-    borderColor: "border-purple-100 dark:border-purple-900/40",
-    iconColor: "text-purple-600 dark:text-purple-400",
-  },
-  {
-    title: "Teaching Staff",
-    value: "18",
-    icon: GraduationCap,
-    bgColor: "bg-sky-50/60 dark:bg-sky-950/20",
-    borderColor: "border-sky-100 dark:border-sky-900/40",
-    iconColor: "text-sky-500 dark:text-sky-400",
-  },
-]
+interface SubjectStatsProps {
+  subjects: SubjectItem[]
+}
 
-export function SubjectStats() {
+export function SubjectStats({ subjects }: SubjectStatsProps) {
+  const totalSubjects = subjects.length
+
+  // Total unique classes across all teaching assignments
+  const assignedClassesSet = new Set<string>()
+  // Total unique teachers across all teaching assignments
+  const teachingStaffSet = new Set<string>()
+
+  subjects.forEach((subject) => {
+    subject.teachingAssignments?.forEach((assignment) => {
+      if (assignment.class?.id) {
+        assignedClassesSet.add(assignment.class.id)
+      }
+      if (assignment.teacher?.id) {
+        teachingStaffSet.add(assignment.teacher.id)
+      }
+    })
+  })
+
   return (
     <div className="grid gap-4 sm:grid-cols-3">
-      {statsData.map((stat) => {
-        const Icon = stat.icon
-        return (
-          <Card
-            key={stat.title}
-            className={`border shadow-none transition-all hover:shadow-xs ${stat.bgColor} ${stat.borderColor}`}
-          >
-            <CardContent className="p-6 py-1">
-              <div className="flex items-center justify-between space-x-4">
-                <div className="space-y-1">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {stat.title}
-                  </p>
-                  <p className="text-2xl font-bold tracking-tight text-foreground">
-                    {stat.value}
-                  </p>
-                </div>
-                <div className="flex h-12 w-12 items-center justify-center">
-                  <Icon className={`h-8 w-8 ${stat.iconColor}`} />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )
-      })}
+      {/* Total Subjects */}
+      <Card className="border shadow-xs bg-amber-50/40 dark:bg-amber-950/10 border-amber-100">
+        <CardContent className="p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-muted-foreground">Total Subjects</p>
+            <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{totalSubjects}</p>
+          </div>
+          <div className="p-3 rounded-xl bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">
+            <BookOpen className="h-5 w-5" />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Assigned Classes */}
+      <Card className="border shadow-xs bg-purple-50/40 dark:bg-purple-950/10 border-purple-100">
+        <CardContent className="p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-muted-foreground">Assigned Classes</p>
+            <p className="text-2xl font-bold tracking-tight text-purple-600 dark:text-purple-400 mt-1">
+              {assignedClassesSet.size}
+            </p>
+          </div>
+          <div className="p-3 rounded-xl bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300">
+            <Building2 className="h-5 w-5" />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Teaching Staff */}
+      <Card className="border shadow-xs bg-sky-50/40 dark:bg-sky-950/10 border-sky-100">
+        <CardContent className="p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-muted-foreground">Teaching Staff</p>
+            <p className="text-2xl font-bold tracking-tight text-sky-600 dark:text-sky-400 mt-1">
+              {teachingStaffSet.size}
+            </p>
+          </div>
+          <div className="p-3 rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-900/50 dark:text-sky-300">
+            <GraduationCap className="h-5 w-5" />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }
