@@ -1,69 +1,77 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { School, GraduationCap, BookOpen, UserCheck } from "lucide-react"
+import { Building2, GraduationCap, BookOpen, Users } from "lucide-react"
+import { ClassItem, TeachingAssignment } from "@/types/class"
 
-const statsData = [
-  {
-    title: "Total Classes",
-    value: "12",
-    icon: School,
-    bgColor: "bg-purple-50/60 dark:bg-purple-950/20",
-    borderColor: "border-purple-100 dark:border-purple-900/40",
-    iconColor: "text-purple-600 dark:text-purple-400",
-  },
-  {
-    title: "Total Enrolled",
-    value: "245",
-    icon: GraduationCap,
-    bgColor: "bg-sky-50/60 dark:bg-sky-950/20",
-    borderColor: "border-sky-100 dark:border-sky-900/40",
-    iconColor: "text-sky-500 dark:text-sky-400",
-  },
-  {
-    title: "Active Subjects",
-    value: "8",
-    icon: BookOpen,
-    bgColor: "bg-amber-50/60 dark:bg-amber-950/20",
-    borderColor: "border-amber-100 dark:border-amber-900/40",
-    iconColor: "text-amber-500 dark:text-amber-400",
-  },
-  {
-    title: "Assigned Teachers",
-    value: "18",
-    icon: UserCheck,
-    bgColor: "bg-emerald-50/60 dark:bg-emerald-950/20",
-    borderColor: "border-emerald-100 dark:border-emerald-900/40",
-    iconColor: "text-emerald-600 dark:text-emerald-400",
-  },
-]
+interface ClassStatsProps {
+  classes: ClassItem[]
+  assignments: TeachingAssignment[]
+}
 
-export function ClassStats() {
+export function ClassStats({ classes, assignments }: ClassStatsProps) {
+  const totalClasses = classes.length
+  
+  // Sum of studentCount across all classes
+  const totalEnrolled = classes.reduce((acc, curr) => acc + (curr.studentCount || 0), 0)
+  
+  // Total unique subjects assigned
+  const uniqueSubjects = new Set(assignments.map((a) => a.subjectId || a.subject?.id)).size
+  
+  // Total unique teachers assigned across all classes
+  const assignedTeachers = new Set(assignments.map((a) => a.teacherId || a.teacher?.id)).size
+
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-      {statsData.map((stat) => {
-        const Icon = stat.icon
-        return (
-          <Card
-            key={stat.title}
-            className={`border shadow-none transition-all hover:shadow-xs ${stat.bgColor} ${stat.borderColor}`}
-          >
-            <CardContent className="p-6 py-0">
-              <div className="flex items-center justify-between space-x-4">
-                <div className="space-y-1">
-                  <p className="text-sm font-medium text-muted-foreground">
-                    {stat.title}
-                  </p>
-                  <p className="text-2xl font-bold tracking-tight text-foreground">
-                    {stat.value}
-                  </p>
-                </div>
-                <div className="flex h-12 w-12 items-center justify-center">
-                  <Icon className={`h-8 w-8 ${stat.iconColor}`} />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        )
-      })}
+      {/* Total Classes */}
+      <Card className="border shadow-xs bg-purple-50/40 dark:bg-purple-950/10 border-purple-100">
+        <CardContent className="p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-muted-foreground">Total Classes</p>
+            <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{totalClasses}</p>
+          </div>
+          <div className="p-3 rounded-xl bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300">
+            <Building2 className="h-5 w-5" />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Total Enrolled */}
+      <Card className="border shadow-xs bg-sky-50/40 dark:bg-sky-950/10 border-sky-100">
+        <CardContent className="p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-muted-foreground">Total Enrolled</p>
+            <p className="text-2xl font-bold tracking-tight text-sky-600 dark:text-sky-400 mt-1">{totalEnrolled}</p>
+          </div>
+          <div className="p-3 rounded-xl bg-sky-100 text-sky-700 dark:bg-sky-900/50 dark:text-sky-300">
+            <GraduationCap className="h-5 w-5" />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Active Subjects */}
+      <Card className="border shadow-xs bg-amber-50/40 dark:bg-amber-950/10 border-amber-100">
+        <CardContent className="p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-muted-foreground">Active Subjects</p>
+            <p className="text-2xl font-bold tracking-tight text-amber-600 dark:text-amber-400 mt-1">{uniqueSubjects}</p>
+          </div>
+          <div className="p-3 rounded-xl bg-amber-100 text-amber-700 dark:bg-amber-900/50 dark:text-amber-300">
+            <BookOpen className="h-5 w-5" />
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Assigned Teachers */}
+      <Card className="border shadow-xs bg-emerald-50/40 dark:bg-emerald-950/10 border-emerald-100">
+        <CardContent className="p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs font-medium text-muted-foreground">Assigned Teachers</p>
+            <p className="text-2xl font-bold tracking-tight text-emerald-600 dark:text-emerald-400 mt-1">{assignedTeachers}</p>
+          </div>
+          <div className="p-3 rounded-xl bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
+            <Users className="h-5 w-5" />
+          </div>
+        </CardContent>
+      </Card>
     </div>
   )
 }

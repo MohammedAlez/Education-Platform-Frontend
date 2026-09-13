@@ -1,13 +1,19 @@
 import { Button } from "@/components/ui/button"
 import { ClassStats } from "./admin-components/class-stats"
 import { ClassFilters } from "./admin-components/class-filters"
-import { ClassGrid } from "./admin-components/class-card"
+// import { ClassGrid } from "./admin-components/class-card"
 import { PlusCircle } from "lucide-react"
 import { getCurrentUser } from "@/lib/user"
 import { Role } from "@/lib/rbac"
 import { ClassHeader } from "./student-components/class-header"
 import { ClassSubjects } from "./student-components/class-subjects"
 import { ClassTeachers } from "./student-components/class-teachers"
+import { fetchWithAuth } from "@/lib/api"
+import { requireRole } from "@/lib/user"
+import { ClassesGrid } from "./admin-components//classes-grid"
+import { ClassItem, TeachingAssignment } from "@/types/class"
+import { ClassGrid } from "./teacher-components/class-card"
+
 
 export default async function Classes() {
   const currentUser = await getCurrentUser()
@@ -22,28 +28,42 @@ export default async function Classes() {
     return <StudentMyClassPage />
 }
 
-function AdminClassesPage() {
+
+async function AdminClassesPage() {
+  await requireRole("ADMIN")
+
+  let initialClasses: ClassItem[] = []
+  let initialAssignments: TeachingAssignment[] = []
+
+  try {
+    const [classesRes, assignmentsRes] = await Promise.all([
+      fetchWithAuth("/classes"),
+      fetchWithAuth("/teaching-assignments"),
+    ])
+
+    console.log("response: ", classesRes, assignmentsRes)
+
+    if (classesRes.ok) {
+      const json = await classesRes.json()
+      console.log("calsses json: ", json)
+      initialClasses = Array.isArray(json) ? json : json.data || []
+    }
+
+    if (assignmentsRes.ok) {
+      const json = await assignmentsRes.json()
+      console.log("assignments json: ", json)
+      initialAssignments = Array.isArray(json) ? json : json.data || []
+    }
+  } catch (error) {
+    console.error("Failed fetching classes or assignments:", error)
+  }
+
   return (
-    <div className="space-y-6 p-2">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Classes</h1>
-          <p className="text-sm text-muted-foreground">
-            Overview and management of all school classes.
-          </p>
-        </div>
-        <Button className="gap-2 bg-primary text-primary-foreground hover:bg-primary/90">
-          <PlusCircle className="h-4 w-4" />
-          Create Class
-        </Button>
-      </div>
-
-      <ClassStats />
-
-      <div className="space-y-4">
-        <ClassFilters />
-        <ClassGrid />
-      </div>
+    <div className="p-6">
+      <ClassesGrid
+        initialClasses={initialClasses}
+        initialAssignments={initialAssignments}
+      />
     </div>
   )
 }
