@@ -3,6 +3,7 @@
 // dependency graph stays one-directional: api.ts -> session.ts (never back).
 // getCurrentUserFromApi() moved to ./user.ts, which is the one allowed to
 // depend on both.
+'use server'
 import { cookies } from 'next/headers'
 
 export async function createSession(accessToken: string, refreshToken: string) {

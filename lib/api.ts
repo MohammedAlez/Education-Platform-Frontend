@@ -84,7 +84,24 @@ async function doRefresh(): Promise<boolean> {
     const result = await res.json()
     const { accessToken, refreshToken: newRefreshToken } = result.data
 
-    await createSession(accessToken, newRefreshToken)
+    // NOTE: this is a safety net, not the primary fix. The primary fix is
+    // proactive refresh in middleware.ts, which runs before any Server
+    // Component renders and is legally allowed to write cookies. If we
+    // still land here from inside a plain Server Component (page/layout
+    // render, not a Server Action or Route Handler), cookies().set() will
+    // throw. Swallow that specific failure instead of crashing the render —
+    // worst case the user is treated as logged out and middleware will
+    // refresh properly on the next navigation.
+    try {
+      await createSession(accessToken, newRefreshToken)
+    } catch (cookieError) {
+      console.warn(
+        'Token refresh succeeded but could not persist cookies (likely called during a Server Component render, not a Server Action/Route Handler). Relying on middleware to refresh proactively next time.',
+        cookieError
+      )
+      return false
+    }
+
     return true
   } catch (error) {
     return false

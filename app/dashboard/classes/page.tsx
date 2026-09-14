@@ -1,10 +1,5 @@
-import { Button } from "@/components/ui/button"
-import { ClassStats } from "./admin-components/class-stats"
-import { ClassFilters } from "./admin-components/class-filters"
-// import { ClassGrid } from "./admin-components/class-card"
-import { PlusCircle } from "lucide-react"
+
 import { getCurrentUser } from "@/lib/user"
-import { Role } from "@/lib/rbac"
 import { ClassHeader } from "./student-components/class-header"
 import { ClassSubjects } from "./student-components/class-subjects"
 import { ClassTeachers } from "./student-components/class-teachers"
