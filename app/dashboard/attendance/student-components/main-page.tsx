@@ -17,9 +17,9 @@ const rawAttendanceData: AttendanceRecord[] = [
 ]
 
 export default function StudentAttendancePage() {
-  const [monthFilter, setMonthFilter] = useState("all")
-  const [subjectFilter, setSubjectFilter] = useState("all")
-  const [statusFilter, setStatusFilter] = useState("all")
+  const [monthFilter, setMonthFilter] = useState<string | null>("all")
+  const [subjectFilter, setSubjectFilter] = useState<string | null>("all")
+  const [statusFilter, setStatusFilter] = useState<string | null>("all")
 
   // Filter Logic
   const filteredRecords = rawAttendanceData.filter((record) => {
@@ -31,7 +31,7 @@ export default function StudentAttendancePage() {
 
     const matchesStatus =
       statusFilter === "all" ||
-      record.status.toLowerCase() === statusFilter.toLowerCase()
+      record.status.toLowerCase() === statusFilter?.toLowerCase()
 
     return matchesSubject && matchesStatus
   })
