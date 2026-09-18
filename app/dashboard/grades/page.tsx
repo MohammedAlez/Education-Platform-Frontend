@@ -1,10 +1,7 @@
 import { getCurrentUser } from "@/lib/user"
-import { GradeFilters } from "./admin-components/grade-filters"
-import { GradeStats } from "./admin-components/grade-stats"
-import { GradeTable } from "./admin-components/grade-table"
-import { Role } from "@/lib/rbac"
 import { GradeEntrySheet } from "./teacher-components/grade-entry-sheet"
 import StudentGradesPage from "./student-components/main-page"
+import { AdminGradesMonitoringPage } from "./admin-components/main-admin-page"
 
 export default async function GradesPage() {
   const currentUser = await getCurrentUser()
@@ -12,31 +9,31 @@ export default async function GradesPage() {
       // const userRole:Role = "STUDENT"
     
       if (userRole === "ADMIN") {
-        return <AdminGradesPage />
+        return <AdminGradesMonitoringPage />
       }else if (userRole === "TEACHER") {
         return <TeacherClassesPage />
       }
       return <StudentGradesPage />
 }
-function AdminGradesPage() {
-  return (
-    <div className="space-y-6 p-2">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Grades Monitoring</h1>
-          <p className="text-sm text-muted-foreground">
-            Track student academic performance and evaluation distributions.
-          </p>
-        </div>
-        <GradeFilters />
-      </div>
+// function AdminGradesPage() {
+//   return (
+//     <div className="space-y-6 p-2">
+//       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+//         <div>
+//           <h1 className="text-2xl font-bold tracking-tight">Grades Monitoring</h1>
+//           <p className="text-sm text-muted-foreground">
+//             Track student academic performance and evaluation distributions.
+//           </p>
+//         </div>
+//         <GradeFilters />
+//       </div>
 
-      <GradeStats />
+//       <GradeStats />
 
-      <GradeTable />
-    </div>
-  )
-}
+//       <GradeTable />
+//     </div>
+//   )
+// }
 
 function TeacherClassesPage() {
 

@@ -18,11 +18,13 @@ export function StudentTableRowActions({ student }: { student: Student }) {
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger >
-          <Button variant="ghost" size="icon" className="h-8 w-8">
-            <MoreHorizontal className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
+        <DropdownMenuTrigger
+          render={
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          }
+        />
         <DropdownMenuContent align="end">
           <DropdownMenuItem onClick={() => setIsEditOpen(true)} className="gap-2">
             <Edit className="h-4 w-4" /> Edit Details
