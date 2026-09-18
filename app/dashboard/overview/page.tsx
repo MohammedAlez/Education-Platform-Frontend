@@ -14,6 +14,7 @@ import { Role } from "@/lib/rbac"
 import { AttendanceBreakdownCard } from "./student-components/attendance-breakdown-card"
 import { StudentStatsCards } from "./student-components/student-stats-cards"
 import { RecentGradesCard as StudentRecentGradesCard } from "./teacher-components/recent-grades-card"
+import { AdminOverviewPage } from "./admin-components/main-admin-overview-page"
 
 export default async function Overview() {
   const currentUser = await getCurrentUser()
@@ -21,51 +22,13 @@ export default async function Overview() {
   // const userRole:Role = "STUDENT"
 
   if (userRole === "ADMIN") {
-    return <AdminDashboardPage />
+    return <AdminOverviewPage />
   }else if (userRole === "TEACHER") {
     return <TeacherDashboardPage />
   }
   return <StudentDashboardPage />
 }
 
-
-function AdminDashboardPage() {
-  return (
-    <div className="space-y-6 p-3">
-      {/* Welcome Header */}
-      <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight">
-          Good morning, Ahmed 👋
-        </h1>
-        <p className="text-sm text-muted-foreground">
-          Here's what's happening at your school today.
-        </p>
-      </div>
-
-      {/* KPI Cards */}
-      <KpiCards />
-
-      {/* Quick Actions */}
-      <QuickActions />
-
-      {/* Attendance Section */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <div className="lg:col-span-1">
-          <AttendanceOverview />
-        </div>
-        <div className="lg:col-span-2">
-          <AttendanceChart />
-        </div>
-      </div>
-
-      {/* Data Tables Section */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <RecentStudents />
-        <RecentPayments />
-      </div>
-    </div>
-  )
-}
 
 function TeacherDashboardPage() {
 
