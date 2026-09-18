@@ -19,6 +19,7 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar"
 import { ChevronsUpDownIcon, PlusIcon } from "lucide-react"
+import { useCurrentUser } from "@/my-components/user-provider"
 
 export function TeamSwitcher({
   teams,
@@ -31,6 +32,10 @@ export function TeamSwitcher({
 }) {
   const { isMobile } = useSidebar()
   const [activeTeam, setActiveTeam] = React.useState(teams[0])
+
+  const currentUser = useCurrentUser()
+
+  console.log("current user from sidebar heder:", currentUser)
   if (!activeTeam) {
     return null
   }
@@ -50,7 +55,7 @@ export function TeamSwitcher({
               {activeTeam.logo}
             </div>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">{activeTeam.name}</span>
+              <span className="truncate font-medium">{currentUser?.school?.name}</span>
               <span className="truncate text-xs">{activeTeam.plan}</span>
             </div>
           </DropdownMenuTrigger>

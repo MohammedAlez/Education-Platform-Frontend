@@ -18,7 +18,7 @@ export default async function AdminTeachersPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-2">
       <TeachersTable initialData={initialTeachers} />
     </div>
   )

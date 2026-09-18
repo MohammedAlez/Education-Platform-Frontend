@@ -37,9 +37,9 @@ const initialStudents: StudentGradeItem[] = [
 ]
 
 export function GradeEntrySheet() {
-  const [selectedClass, setSelectedClass] = useState("class-a")
-  const [selectedSubject, setSelectedSubject] = useState("math")
-  const [gradeType, setGradeType] = useState("test")
+  const [selectedClass, setSelectedClass] = useState<string | null>("class-a")
+  const [selectedSubject, setSelectedSubject] = useState<string | null>("math")
+  const [gradeType, setGradeType] = useState<string | null>("test")
   const [students, setStudents] = useState<StudentGradeItem[]>(initialStudents)
   const [isSaving, setIsSaving] = useState(false)
   const [saveSuccess, setSaveSuccess] = useState(false)

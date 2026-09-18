@@ -39,8 +39,8 @@ const initialStudents: StudentAttendance[] = [
 ]
 
 export function AttendanceSheet() {
-  const [selectedClass, setSelectedClass] = useState("class-a")
-  const [selectedSubject, setSelectedSubject] = useState("math")
+  const [selectedClass, setSelectedClass] = useState<string | null>("class-a")
+  const [selectedSubject, setSelectedSubject] = useState<string | null>("math")
   const [students, setStudents] = useState<StudentAttendance[]>(initialStudents)
   const [isSaving, setIsSaving] = useState(false)
 

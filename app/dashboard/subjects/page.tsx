@@ -32,7 +32,7 @@ async function AdminSubjectsPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-2">
       <SubjectsGrid initialSubjects={initialSubjects} />
     </div>
   )

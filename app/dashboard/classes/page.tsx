@@ -54,7 +54,7 @@ async function AdminClassesPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-2">
       <ClassesGrid
         initialClasses={initialClasses}
         initialAssignments={initialAssignments}

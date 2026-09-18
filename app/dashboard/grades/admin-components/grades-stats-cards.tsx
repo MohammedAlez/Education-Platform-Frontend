@@ -15,7 +15,7 @@ export function GradesStatsCards({ stats, isLoading }: GradesStatsCardsProps) {
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {/* Average Grade */}
       <Card className="bg-purple-50/40 border-purple-100 dark:bg-purple-950/10 dark:border-purple-900/20">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Average Grade</p>
             {isLoading ? (
@@ -37,7 +37,7 @@ export function GradesStatsCards({ stats, isLoading }: GradesStatsCardsProps) {
 
       {/* Highest Grade */}
       <Card className="bg-emerald-50/40 border-emerald-100 dark:bg-emerald-950/10 dark:border-emerald-900/20">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Highest Grade</p>
             {isLoading ? (
@@ -59,7 +59,7 @@ export function GradesStatsCards({ stats, isLoading }: GradesStatsCardsProps) {
 
       {/* Lowest Grade */}
       <Card className="bg-amber-50/40 border-amber-100 dark:bg-amber-950/10 dark:border-amber-900/20">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Lowest Grade</p>
             {isLoading ? (
@@ -81,7 +81,7 @@ export function GradesStatsCards({ stats, isLoading }: GradesStatsCardsProps) {
 
       {/* Students Below 10 */}
       <Card className="bg-rose-50/40 border-rose-100 dark:bg-rose-950/10 dark:border-rose-900/20">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Students Below 10</p>
             {isLoading ? (

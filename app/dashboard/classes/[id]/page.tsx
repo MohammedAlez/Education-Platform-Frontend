@@ -16,8 +16,8 @@ import { ClassDetailOverview } from "./teacher-components/class-detail-overview"
 
 export default async function ClassDetailsPage() {
   const currentUser = await getCurrentUser()
-      // const userRole = currentUser?.role 
-      const userRole:Role = "TEACHER"
+      const userRole = currentUser?.role 
+      // const userRole:Role = "TEACHER"
     
       if (userRole === "ADMIN") {
         return <AdminClassDetailsPage />

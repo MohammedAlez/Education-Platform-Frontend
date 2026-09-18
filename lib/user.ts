@@ -10,7 +10,11 @@ export interface CurrentUser {
   role: Role
   status: string
   schoolId?: string
-  school?: unknown
+  school?: {
+    id:string
+    name:string
+    status:"ACTIVE"|"UNACTIVE"
+  }
   // add whatever else your /auth/me payload includes
 }
 

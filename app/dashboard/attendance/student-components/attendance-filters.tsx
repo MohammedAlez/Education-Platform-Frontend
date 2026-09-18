@@ -9,12 +9,12 @@ import {
 } from "@/components/ui/select"
 
 interface AttendanceFiltersProps {
-  month: string
-  setMonth: (value: string) => void
-  subject: string
-  setSubject: (value: string) => void
-  status: string
-  setStatus: (value: string) => void
+  month: string | null
+  setMonth: (value: string | null) => void
+  subject: string | null
+  setSubject: (value: string | null) => void
+  status: string | null
+  setStatus: (value: string | null) => void
 }
 
 export function AttendanceFilters({

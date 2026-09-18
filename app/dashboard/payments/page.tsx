@@ -19,7 +19,7 @@ export default async function AdminPaymentsPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-2">
       <PaymentsGrid initialPayments={initialPayments} />
     </div>
   )

@@ -71,7 +71,7 @@ async function AdminStudentsPage() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-2">
       <StudentsTable initialData={initialStudents} />
     </div>
   )

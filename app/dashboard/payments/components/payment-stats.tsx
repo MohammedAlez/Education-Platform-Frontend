@@ -27,7 +27,7 @@ export function PaymentStats({ payments }: PaymentStatsProps) {
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {/* Total Expected */}
       <Card className="border shadow-xs bg-purple-50/40 dark:bg-purple-950/10 border-purple-100">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Total Expected</p>
             <p className="text-2xl font-bold tracking-tight text-foreground mt-1">
@@ -42,7 +42,7 @@ export function PaymentStats({ payments }: PaymentStatsProps) {
 
       {/* Paid */}
       <Card className="border shadow-xs bg-emerald-50/40 dark:bg-emerald-950/10 border-emerald-100">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Paid</p>
             <p className="text-2xl font-bold tracking-tight text-emerald-600 dark:text-emerald-400 mt-1">
@@ -57,7 +57,7 @@ export function PaymentStats({ payments }: PaymentStatsProps) {
 
       {/* Pending */}
       <Card className="border shadow-xs bg-amber-50/40 dark:bg-amber-950/10 border-amber-100">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Pending</p>
             <p className="text-2xl font-bold tracking-tight text-amber-600 dark:text-amber-400 mt-1">
@@ -72,7 +72,7 @@ export function PaymentStats({ payments }: PaymentStatsProps) {
 
       {/* Overdue */}
       <Card className="border shadow-xs bg-rose-50/40 dark:bg-rose-950/10 border-rose-100">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Overdue</p>
             <p className="text-2xl font-bold tracking-tight text-rose-600 dark:text-rose-400 mt-1">

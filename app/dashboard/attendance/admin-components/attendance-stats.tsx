@@ -20,7 +20,7 @@ export function AttendanceStats({ records }: AttendanceStatsProps) {
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {/* Present Card */}
       <Card className="border shadow-xs bg-emerald-50/40 dark:bg-emerald-950/10 border-emerald-100/80">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Present</p>
             <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{presentCount}</p>
@@ -33,7 +33,7 @@ export function AttendanceStats({ records }: AttendanceStatsProps) {
 
       {/* Absent Card */}
       <Card className="border shadow-xs bg-rose-50/40 dark:bg-rose-950/10 border-rose-100/80">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Absent</p>
             <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{absentCount}</p>
@@ -46,7 +46,7 @@ export function AttendanceStats({ records }: AttendanceStatsProps) {
 
       {/* Late Card */}
       <Card className="border shadow-xs bg-amber-50/40 dark:bg-amber-950/10 border-amber-100/80">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Late</p>
             <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{lateCount}</p>
@@ -59,7 +59,7 @@ export function AttendanceStats({ records }: AttendanceStatsProps) {
 
       {/* Attendance Rate Card */}
       <Card className="border shadow-xs bg-purple-50/40 dark:bg-purple-950/10 border-purple-100/80">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Attendance Rate</p>
             <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{attendanceRate}%</p>

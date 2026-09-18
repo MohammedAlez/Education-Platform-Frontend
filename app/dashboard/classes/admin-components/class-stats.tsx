@@ -23,7 +23,7 @@ export function ClassStats({ classes, assignments }: ClassStatsProps) {
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {/* Total Classes */}
       <Card className="border shadow-xs bg-purple-50/40 dark:bg-purple-950/10 border-purple-100">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Total Classes</p>
             <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{totalClasses}</p>
@@ -36,7 +36,7 @@ export function ClassStats({ classes, assignments }: ClassStatsProps) {
 
       {/* Total Enrolled */}
       <Card className="border shadow-xs bg-sky-50/40 dark:bg-sky-950/10 border-sky-100">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Total Enrolled</p>
             <p className="text-2xl font-bold tracking-tight text-sky-600 dark:text-sky-400 mt-1">{totalEnrolled}</p>
@@ -49,7 +49,7 @@ export function ClassStats({ classes, assignments }: ClassStatsProps) {
 
       {/* Active Subjects */}
       <Card className="border shadow-xs bg-amber-50/40 dark:bg-amber-950/10 border-amber-100">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Active Subjects</p>
             <p className="text-2xl font-bold tracking-tight text-amber-600 dark:text-amber-400 mt-1">{uniqueSubjects}</p>
@@ -62,7 +62,7 @@ export function ClassStats({ classes, assignments }: ClassStatsProps) {
 
       {/* Assigned Teachers */}
       <Card className="border shadow-xs bg-emerald-50/40 dark:bg-emerald-950/10 border-emerald-100">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Assigned Teachers</p>
             <p className="text-2xl font-bold tracking-tight text-emerald-600 dark:text-emerald-400 mt-1">{assignedTeachers}</p>

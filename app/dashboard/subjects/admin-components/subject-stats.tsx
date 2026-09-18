@@ -29,7 +29,7 @@ export function SubjectStats({ subjects }: SubjectStatsProps) {
     <div className="grid gap-4 sm:grid-cols-3">
       {/* Total Subjects */}
       <Card className="border shadow-xs bg-amber-50/40 dark:bg-amber-950/10 border-amber-100">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Total Subjects</p>
             <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{totalSubjects}</p>
@@ -42,7 +42,7 @@ export function SubjectStats({ subjects }: SubjectStatsProps) {
 
       {/* Assigned Classes */}
       <Card className="border shadow-xs bg-purple-50/40 dark:bg-purple-950/10 border-purple-100">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Assigned Classes</p>
             <p className="text-2xl font-bold tracking-tight text-purple-600 dark:text-purple-400 mt-1">
@@ -57,7 +57,7 @@ export function SubjectStats({ subjects }: SubjectStatsProps) {
 
       {/* Teaching Staff */}
       <Card className="border shadow-xs bg-sky-50/40 dark:bg-sky-950/10 border-sky-100">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Teaching Staff</p>
             <p className="text-2xl font-bold tracking-tight text-sky-600 dark:text-sky-400 mt-1">

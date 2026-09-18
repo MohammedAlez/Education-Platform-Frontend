@@ -14,7 +14,7 @@ export function TeacherStats({ teachers }: TeacherStatsProps) {
   return (
     <div className="grid gap-4 sm:grid-cols-3">
       <Card className="border shadow-xs bg-purple-50/40 dark:bg-purple-950/10 border-purple-100">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Total Teachers</p>
             <p className="text-2xl font-bold tracking-tight text-foreground mt-1">{total}</p>
@@ -26,7 +26,7 @@ export function TeacherStats({ teachers }: TeacherStatsProps) {
       </Card>
 
       <Card className="border shadow-xs bg-emerald-50/40 dark:bg-emerald-950/10 border-emerald-100">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Active Teachers</p>
             <p className="text-2xl font-bold tracking-tight text-emerald-600 dark:text-emerald-400 mt-1">{active}</p>
@@ -38,7 +38,7 @@ export function TeacherStats({ teachers }: TeacherStatsProps) {
       </Card>
 
       <Card className="border shadow-xs bg-rose-50/40 dark:bg-rose-950/10 border-rose-100">
-        <CardContent className="p-5 flex items-center justify-between">
+        <CardContent className="p-5 py-0 flex items-center justify-between">
           <div>
             <p className="text-xs font-medium text-muted-foreground">Inactive Teachers</p>
             <p className="text-2xl font-bold tracking-tight text-rose-600 dark:text-rose-400 mt-1">{inactive}</p>
