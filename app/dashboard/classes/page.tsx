@@ -7,7 +7,7 @@ import { fetchWithAuth } from "@/lib/api"
 import { requireRole } from "@/lib/user"
 import { ClassesGrid } from "./admin-components//classes-grid"
 import { ClassItem, TeachingAssignment } from "@/types/class"
-import { ClassGrid } from "./teacher-components/class-card"
+import TeacherClassesPage from "./teacher-components/main-page"
 
 
 export default async function Classes() {
@@ -63,22 +63,6 @@ async function AdminClassesPage() {
   )
 }
 
-function TeacherClassesPage() {
-
-  return (
-    <div className="space-y-6 p-2">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">My Classes</h1>
-        <p className="text-sm text-muted-foreground">
-          View assigned class sections and access student rosters or gradebooks.
-        </p>
-      </div>
-
-      <ClassGrid />
-    </div>
-  )
-
-}
 
 function StudentMyClassPage() {
   return (

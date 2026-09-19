@@ -24,3 +24,28 @@ export interface TeacherFormValues {
   password?: string
   status?: "ACTIVE" | "INACTIVE"
 }
+
+
+
+export interface TeacherClass {
+  id: string
+  name: string
+  description?: string
+  studentsCount: number
+  subjects: Array<{
+    id: string
+    name: string
+  }>
+}
+
+export interface TeacherStudent {
+  id: string
+  firstName: string
+  lastName: string
+  class: {
+    id: string
+    name: string
+  }
+  attendanceRate: number
+  academicAverage: number
+}

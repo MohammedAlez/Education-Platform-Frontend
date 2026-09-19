@@ -1,73 +1,74 @@
-import Link from "next/link"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { School, Users, ArrowRight } from "lucide-react"
+"use client"
 
-export interface TeacherClassItem {
-  id: string
-  name: string
-  studentCount: number
-  subject: string
+import Link from "next/link"
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { School, Users, ArrowRight } from "lucide-react"
+import { TeacherClass } from "@/types/teacher"
+
+interface ClassCardProps {
+  classData: TeacherClass
 }
 
-const mockTeacherClasses: TeacherClassItem[] = [
-  { id: "class-a", name: "Class A", studentCount: 28, subject: "Mathematics" },
-  { id: "class-b", name: "Class B", studentCount: 31, subject: "Mathematics" },
-  { id: "class-c", name: "Class C", studentCount: 26, subject: "Mathematics" },
-]
+export function ClassCard({ classData }: ClassCardProps) {
+  // Extract subject names or default to N/A
+  const subjectNames =
+    classData.subjects?.map((s) => s.name).join(", ") || "No Subject Assigned"
 
-export function ClassGrid() {
   return (
-    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {mockTeacherClasses.map((cls) => (
-        <Card
-          key={cls.id}
-          className="group relative flex flex-col justify-between border shadow-xs transition-all hover:border-purple-500/40 hover:shadow-md"
+    <Card className="rounded-2xl border bg-card shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+      <div>
+        {/* Card Header: Icon, Name, Subject Badge */}
+        <CardHeader className="p-5 pb-3 flex flex-row items-center justify-between space-y-0">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 bg-purple-100 dark:bg-purple-950/40 rounded-xl text-purple-600 dark:text-purple-400">
+              <School className="h-5 w-5" />
+            </div>
+            <h3 className="font-bold text-lg text-foreground tracking-tight">
+              {classData.name}
+            </h3>
+          </div>
+
+          <Badge
+            variant="outline"
+            className="bg-amber-50/70 border-amber-200 text-amber-700 dark:bg-amber-950/30 dark:border-amber-900/40 dark:text-amber-400 font-medium px-2.5 py-0.5 rounded-full text-xs"
+          >
+            {subjectNames}
+          </Badge>
+        </CardHeader>
+
+        {/* Card Content: Enrolled Students Box */}
+        <CardContent className="px-5 py-3">
+          <div className="bg-muted/40 border rounded-xl p-3.5 flex items-center gap-3">
+            <div className="text-muted-foreground">
+              <Users className="h-5 w-5 text-sky-500" />
+            </div>
+            <div>
+              <p className="text-xs font-medium text-muted-foreground">Enrolled Students</p>
+              <p className="text-base font-bold text-foreground">
+                {classData.studentsCount} {classData.studentsCount === 1 ? "Student" : "Students"}
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </div>
+
+      {/* Card Footer: Open Class Action */}
+      <CardFooter className="p-5 pt-2">
+        <Button
+          variant="outline"
+          className="w-full justify-between rounded-xl h-10 border-muted font-medium hover:bg-accent group p-0"
         >
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-50 text-purple-600 dark:bg-purple-950/40 dark:text-purple-400">
-                  <School className="h-5 w-5" />
-                </div>
-                <CardTitle className="text-lg font-bold tracking-tight">
-                  {cls.name}
-                </CardTitle>
-              </div>
-              <Badge
-                variant="secondary"
-                className="bg-amber-50 text-amber-700 dark:bg-amber-950/40 dark:text-amber-300 font-normal"
-              >
-                {cls.subject}
-              </Badge>
-            </div>
-          </CardHeader>
-
-          <CardContent className="pt-2">
-            <div className="flex items-center gap-2 rounded-lg border bg-muted/40 p-3">
-              <Users className="h-4 w-4 text-sky-500 dark:text-sky-400" />
-              <div>
-                <p className="text-xs text-muted-foreground">Enrolled Students</p>
-                <p className="text-sm font-semibold">{cls.studentCount} Students</p>
-              </div>
-            </div>
-          </CardContent>
-
-          <CardFooter className="pt-2">
-            <Button
-              
-              variant="outline"
-              className="w-full justify-between group-hover:bg-primary group-hover:text-primary-foreground transition-colors"
-            >
-              <Link href={`/dashboard/classes/${cls.id}`} >
-                <span>Open Class</span>
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </Button>
-          </CardFooter>
-        </Card>
-      ))}
-    </div>
+          <Link
+            href={`/dashboard/teacher/students?classId=${classData.id}`}
+            className="w-full h-full flex items-center justify-between px-4"
+          >
+            <span>Open Class</span>
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 text-muted-foreground" />
+          </Link>
+        </Button>
+      </CardFooter>
+    </Card>
   )
 }
