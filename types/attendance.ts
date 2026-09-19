@@ -42,3 +42,28 @@ export interface StudentAttendanceSummary {
   absentCount: number
   lateCount: number
 }
+
+
+
+
+export interface TeacherAttendanceRecord {
+  id?: string
+  studentId: string
+  teachingAssignmentId: string
+  date: string
+  status: AttendanceStatus
+  note?: string | null
+  student?: {
+    id: string
+    firstName: string
+    lastName: string
+  }
+}
+
+
+export interface ActiveSession {
+  classId: string
+  className: string
+  subjectName: string
+  teachingAssignmentId: string
+}

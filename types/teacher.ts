@@ -35,6 +35,7 @@ export interface TeacherClass {
   subjects: Array<{
     id: string
     name: string
+    teachingAssignmentId: string
   }>
 }
 

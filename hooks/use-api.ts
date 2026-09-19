@@ -5,14 +5,17 @@
 import { useQuery, useMutation, useQueryClient, type QueryKey } from '@tanstack/react-query'
 
 async function proxyFetch<T>(path: string, init?: RequestInit): Promise<T> {
+  console.log("start fetching")
   const res = await fetch(`/api/proxy${path}`, {
     ...init,
     headers: { 'Content-Type': 'application/json', ...init?.headers },
   })
+  console.log("response: ", res)
   if (!res.ok) {
     const body = await res.json().catch(() => ({}))
     throw new Error(body.message || `Request failed: ${res.status}`)
   }
+  
   return res.json()
 }
 

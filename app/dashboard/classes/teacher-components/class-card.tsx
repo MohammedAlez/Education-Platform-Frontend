@@ -61,7 +61,7 @@ export function ClassCard({ classData }: ClassCardProps) {
           className="w-full justify-between rounded-xl h-10 border-muted font-medium hover:bg-accent group p-0"
         >
           <Link
-            href={`/dashboard/teacher/students?classId=${classData.id}`}
+            href={`/dashboard/classes/${classData.id}`}
             className="w-full h-full flex items-center justify-between px-4"
           >
             <span>Open Class</span>

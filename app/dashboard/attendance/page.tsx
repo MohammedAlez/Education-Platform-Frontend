@@ -1,9 +1,9 @@
 import { getCurrentUser, requireRole } from "@/lib/user"
-import { AttendanceSheet } from "./teacher-components/attendance-sheet"
 import StudentAttendancePage from "./student-components/main-page"
 import { fetchWithAuth } from "@/lib/api"
 import { AttendanceOverviewGrid } from "./admin-components/attendance-overview-grid"
 import { AttendanceRecord } from "@/types/attendance"
+import { TeacherAttendancePage } from "./teacher-components/main-page"
 
 export default async function AttendancePage() {
   const currentUser = await getCurrentUser()
@@ -13,7 +13,7 @@ export default async function AttendancePage() {
       if (userRole === "ADMIN") {
         return <AdminAttendancePage />
       }else if (userRole === "TEACHER") {
-        return <TeacherClassesPage />
+        return <TeacherAttendancePage />
       }
       return <StudentAttendancePage />
 }
@@ -37,21 +37,6 @@ async function AdminAttendancePage() {
   return (
     <div className="p-2">
       <AttendanceOverviewGrid initialRecords={initialRecords} />
-    </div>
-  )
-}
-
-function TeacherClassesPage() {
-  return (
-    <div className="space-y-6 p-2">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Attendance</h1>
-        <p className="text-sm text-muted-foreground">
-          Record and manage daily student session attendance.
-        </p>
-      </div>
-
-      <AttendanceSheet />
     </div>
   )
 }
