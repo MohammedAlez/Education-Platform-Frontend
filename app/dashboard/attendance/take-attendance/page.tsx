@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect, useMemo, Suspense } from "react"
 import { useSearchParams, useRouter } from "next/navigation"
 import { useApiQuery, useApiMutation } from "@/hooks/use-api"
 import { useQueryClient } from "@tanstack/react-query"
@@ -14,7 +14,7 @@ import { AttendanceHeader } from "./components/attendance-header"
 import { AttendanceTable } from "./components/attendance-table"
 import { AttendanceFooter } from "./components/attendance-footer"
 
-export default function TakeAttendancePage() {
+export function Content() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const queryClient = useQueryClient()
@@ -176,4 +176,14 @@ export default function TakeAttendancePage() {
       </Card>
     </div>
   )
+}
+
+
+export default function TakeAttendancePage(){
+
+    return (
+        <Suspense>
+            <Content />
+        </Suspense>
+    )
 }
