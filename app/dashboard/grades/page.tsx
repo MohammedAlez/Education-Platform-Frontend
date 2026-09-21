@@ -2,6 +2,7 @@ import { getCurrentUser } from "@/lib/user"
 import { GradeEntrySheet } from "./teacher-components/grade-entry-sheet"
 import StudentGradesPage from "./student-components/main-page"
 import { AdminGradesMonitoringPage } from "./admin-components/main-admin-page"
+import { TeacherGradesPage } from "./teacher-components/main-page"
 
 export default async function GradesPage() {
   const currentUser = await getCurrentUser()
@@ -11,7 +12,7 @@ export default async function GradesPage() {
       if (userRole === "ADMIN") {
         return <AdminGradesMonitoringPage />
       }else if (userRole === "TEACHER") {
-        return <TeacherClassesPage />
+        return <TeacherGradesPage />
       }
       return <StudentGradesPage />
 }
