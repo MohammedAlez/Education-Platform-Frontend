@@ -140,14 +140,14 @@ const data = {
       title: "My Account",
       url: "/dashboard/account",
       icon: <UserIcon size={30} />,
-      roles: ["TEACHER",],
+      roles: ["TEACHER", "Student"],
     },
-    {
-      title: "My Account",
-      url: "/dashboard/my-profile",
-      icon: <UserIcon size={30} />,
-      roles: ["STUDENT"],
-    },
+    // {
+    //   title: "My Account",
+    //   url: "/dashboard/my-profile",
+    //   icon: <UserIcon size={30} />,
+    //   roles: ["STUDENT"],
+    // },
   ]
 }
 
