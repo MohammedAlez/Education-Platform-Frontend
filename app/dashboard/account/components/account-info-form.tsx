@@ -1,11 +1,12 @@
 "use client"
 
 import { useState } from "react"
+import { useApiMutation } from "@/hooks/use-api"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { CheckCircle2, Save } from "lucide-react"
+import { CheckCircle2, Save, AlertCircle } from "lucide-react"
 
 interface AccountInfoFormProps {
   initialFirstName: string
@@ -22,20 +23,46 @@ export function AccountInfoForm({
 }: AccountInfoFormProps) {
   const [firstName, setFirstName] = useState(initialFirstName)
   const [lastName, setLastName] = useState(initialLastName)
-  const [email, setEmail] = useState(initialEmail)
   const [phone, setPhone] = useState(initialPhone)
-  const [isSaving, setIsSaving] = useState(false)
   const [savedSuccess, setSavedSuccess] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const updateProfileMutation = useApiMutation<
+    any,
+    { firstName: string; lastName: string; phone: string }
+  >("/users/profile", "PATCH")
+
+  // Check if form values differ from initial values
+  const isDirty =
+    firstName !== initialFirstName ||
+    lastName !== initialLastName ||
+    phone !== initialPhone
+
+  // Ensure no fields are empty
+  const isFormValid =
+    firstName.trim() !== "" &&
+    lastName.trim() !== "" &&
+    phone.trim() !== ""
+
+  const isPending = updateProfileMutation.isPending
+  const isDisabled = !isDirty || !isFormValid || isPending
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSaving(true)
+    if (isDisabled) return
+
     setSavedSuccess(false)
-    setTimeout(() => {
-      setIsSaving(false)
+
+    try {
+      await updateProfileMutation.mutateAsync({
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        phone: phone.trim(),
+      })
       setSavedSuccess(true)
       setTimeout(() => setSavedSuccess(false), 3000)
-    }, 600)
+    } catch (err) {
+      console.error("Failed to update profile:", err)
+    }
   }
 
   return (
@@ -72,8 +99,9 @@ export function AccountInfoForm({
               <Input
                 id="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={initialEmail}
+                disabled
+                className="bg-muted text-muted-foreground cursor-not-allowed"
               />
             </div>
 
@@ -87,6 +115,13 @@ export function AccountInfoForm({
             </div>
           </div>
 
+          {updateProfileMutation.isError && (
+            <p className="flex items-center gap-1.5 text-xs font-medium text-destructive">
+              <AlertCircle className="h-4 w-4" />
+              {updateProfileMutation.error?.message || "Failed to save profile changes."}
+            </p>
+          )}
+
           <div className="flex items-center justify-between pt-2">
             {savedSuccess ? (
               <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 animate-in fade-in">
@@ -95,9 +130,13 @@ export function AccountInfoForm({
               </span>
             ) : <div />}
 
-            <Button type="submit" disabled={isSaving} className="gap-2">
+            <Button
+              type="submit"
+              disabled={isDisabled}
+              className="gap-2"
+            >
               <Save className="h-4 w-4" />
-              {isSaving ? "Saving..." : "Save Changes"}
+              {isPending ? "Saving..." : "Save Changes"}
             </Button>
           </div>
         </form>

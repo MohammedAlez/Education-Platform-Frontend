@@ -1,34 +1,66 @@
 "use client"
 
 import { useState } from "react"
+import { useApiMutation } from "@/hooks/use-api"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { KeyRound, CheckCircle2 } from "lucide-react"
+import { KeyRound, CheckCircle2, AlertCircle } from "lucide-react"
 
 export function AccountSecurityForm() {
   const [currentPassword, setCurrentPassword] = useState("")
   const [newPassword, setNewPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
-  const [isSaving, setIsSaving] = useState(false)
+  const [validationError, setValidationError] = useState<string | null>(null)
   const [savedSuccess, setSavedSuccess] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!currentPassword || !newPassword || newPassword !== confirmPassword) return
+  const changePasswordMutation = useApiMutation<
+    any,
+    { currentPassword: string; newPassword: string }
+  >("/auth/change-password", "POST")
 
-    setIsSaving(true)
+  // Check if any password field has been typed into
+  const isDirty =
+    currentPassword.length > 0 ||
+    newPassword.length > 0 ||
+    confirmPassword.length > 0
+
+  // Validate that all fields are filled and new passwords match
+  const isFormValid =
+    currentPassword.trim() !== "" &&
+    newPassword.trim() !== "" &&
+    confirmPassword.trim() !== "" &&
+    newPassword === confirmPassword
+
+  const isPending = changePasswordMutation.isPending
+  const isDisabled = !isDirty || !isFormValid || isPending
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (isDisabled) return
+
+    setValidationError(null)
     setSavedSuccess(false)
-    setTimeout(() => {
-      setIsSaving(false)
+
+    try {
+      await changePasswordMutation.mutateAsync({
+        currentPassword,
+        newPassword,
+      })
+
       setSavedSuccess(true)
       setCurrentPassword("")
       setNewPassword("")
       setConfirmPassword("")
       setTimeout(() => setSavedSuccess(false), 3000)
-    }, 600)
+    } catch (err) {
+      console.error("Failed to update password:", err)
+    }
   }
+
+  const errorMessage =
+    validationError || (changePasswordMutation.isError ? changePasswordMutation.error?.message : null)
 
   return (
     <Card className="border shadow-xs">
@@ -72,6 +104,21 @@ export function AccountSecurityForm() {
             </div>
           </div>
 
+          {/* Show inline mismatch hint if typed passwords don't match yet */}
+          {newPassword && confirmPassword && newPassword !== confirmPassword && (
+            <p className="flex items-center gap-1.5 text-xs font-medium text-destructive">
+              <AlertCircle className="h-4 w-4" />
+              New passwords do not match.
+            </p>
+          )}
+
+          {errorMessage && (
+            <p className="flex items-center gap-1.5 text-xs font-medium text-destructive">
+              <AlertCircle className="h-4 w-4" />
+              {errorMessage}
+            </p>
+          )}
+
           <div className="flex items-center justify-between pt-2">
             {savedSuccess ? (
               <span className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 animate-in fade-in">
@@ -80,9 +127,14 @@ export function AccountSecurityForm() {
               </span>
             ) : <div />}
 
-            <Button type="submit" disabled={isSaving} variant="outline" className="gap-2">
+            <Button
+              type="submit"
+              disabled={isDisabled}
+              variant="outline"
+              className="gap-2 bg-primary text-accent"
+            >
               <KeyRound className="h-4 w-4" />
-              {isSaving ? "Updating..." : "Update Password"}
+              {isPending ? "Updating..." : "Update Password"}
             </Button>
           </div>
         </form>

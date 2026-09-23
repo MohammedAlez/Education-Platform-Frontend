@@ -66,7 +66,7 @@ export function NavUser({
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
             <div className="grid flex-1 text-left text-sm leading-tight">
-              <span className="truncate font-medium">{'john deo'}</span>
+              <span className="truncate font-medium">{currentUser?.profile?.firstName}</span>
               <span className="truncate text-xs">{currentUser?.email}</span>
             </div>
             <ChevronsUpDownIcon className="ml-auto size-4" />
@@ -85,7 +85,7 @@ export function NavUser({
                     <AvatarFallback>CN</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
-                    <span className="truncate font-medium">{currentUser?.email}</span>
+                    <span className="truncate font-medium">{currentUser?.profile?.firstName}</span>
                     <span className="truncate text-xs">{currentUser?.email}</span>
                   </div>
                 </div>

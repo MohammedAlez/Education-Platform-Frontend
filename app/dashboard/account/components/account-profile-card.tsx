@@ -8,7 +8,7 @@ import { Camera, ShieldCheck } from "lucide-react"
 interface AccountProfileCardProps {
   name: string
   email: string
-  role: "TEACHER" | "STUDENT"
+  role: "TEACHER" | "STUDENT" | "ADMIN"
   identifierLabel: string
   identifierValue: string
 }
@@ -26,7 +26,7 @@ export function AccountProfileCard({
         <div className="flex flex-col sm:flex-row items-center gap-6">
           <div className="relative">
             <div className="flex h-20 w-20 items-center justify-center rounded-full bg-purple-100 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 font-bold text-2xl border-2 border-background shadow-xs">
-              {name.charAt(0)}
+              {name.charAt(0).toUpperCase()}
             </div>
             <Button
               size="icon"

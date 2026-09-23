@@ -15,6 +15,12 @@ export interface CurrentUser {
     name:string
     status:"ACTIVE"|"UNACTIVE"
   }
+  profile? : {
+    id: string
+    firstName: string
+    lastName: string
+    phone: string
+  }
   // add whatever else your /auth/me payload includes
 }
 
