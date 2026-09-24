@@ -9,6 +9,8 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { useCurrentUser } from "@/my-components/user-provider"
+import Link from "next/link"
+
 
 export function NavMain({
   items,
@@ -46,7 +48,7 @@ export function NavMain({
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton
                 isActive={isActive}
-                render={<a href={item.url} />}
+                render={<Link href={item.url} />}
                 tooltip={item.title}
                 className="p-6"
               >
