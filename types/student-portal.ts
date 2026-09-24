@@ -27,3 +27,32 @@ export interface StudentClassDetail {
   subjects: StudentSubject[]
   teachers: StudentTeacher[]
 }
+
+
+export interface Teacher {
+  id: string
+  firstName: string
+  lastName: string
+  email: string
+}
+
+export interface Assessment {
+  id: string
+  title: string
+  type: string
+  grade: number | null
+  maxGrade: number
+  weight: number
+  date: string | null
+}
+
+export interface StudentSubjectItem {
+  subjectId: string
+  subjectName: string
+  code: string
+  teacher: Teacher
+  averageGrade: number
+  maxGrade: number
+  status: "Passing" | "Failing" | "No Grades" | string
+  assessments: Assessment[]
+}

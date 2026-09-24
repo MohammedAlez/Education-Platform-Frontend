@@ -1,6 +1,5 @@
 import { getCurrentUser, requireRole } from "@/lib/user"
-import { Role } from "@/lib/rbac"
-import StudentSubjectsPage from "./student-components/main-page"
+import {StudentSubjectsMainPage} from "./student-components/main-page"
 import { SubjectItem } from "@/types/subject"
 import { fetchWithAuth } from "@/lib/api"
 import { SubjectsGrid } from "./admin-components/subjects-grid"
@@ -13,7 +12,7 @@ export default async function SubjectsPage() {
       if (userRole === "ADMIN") {
         return <AdminSubjectsPage />
       }
-      return <StudentSubjectsPage />
+      return <StudentSubjectsMainPage />
 }
 
 async function AdminSubjectsPage() {
