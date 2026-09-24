@@ -28,6 +28,7 @@ async function AdminStudentsPage() {
     if (res.ok) {
       const json = await res.json()
       initialStudents = Array.isArray(json) ? json : json.data || []
+      console.log("initial students from admin students page:", initialStudents)
     }
   } catch (error) {
     console.error("Failed fetching initial students:", error)

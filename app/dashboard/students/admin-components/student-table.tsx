@@ -34,12 +34,10 @@ interface StudentsTableProps {
 
 export function StudentsTable({ initialData }: StudentsTableProps) {
   const [search, setSearch] = useState("")
-  const [classFilter, setClassFilter] = useState<string | null>("all-classes")
   const [statusFilter, setStatusFilter] = useState<string | null>("all-status")
   const [sortOrder, setSortOrder] = useState<string | null>("newest")
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
 
-  // Query synced via proxy
   const { data } = useApiQuery<{ data: Student[] } | Student[]>(
     STUDENTS_QUERY_KEY,
     STUDENTS_PATH
@@ -56,20 +54,18 @@ export function StudentsTable({ initialData }: StudentsTableProps) {
     .filter((student) => {
       const fullName = `${student.firstName} ${student.lastName}`.toLowerCase()
       const email = (student.user?.email || "").toLowerCase()
+      const phone = (student.phone || "").toLowerCase()
       const query = search.toLowerCase()
 
-      const matchesSearch = fullName.includes(query) || email.includes(query)
+      const matchesSearch =
+        fullName.includes(query) || email.includes(query) || phone.includes(query)
 
       const status = student.status || student.user?.status || "ACTIVE"
       const matchesStatus =
         statusFilter === "all-status" ||
         status.toLowerCase() === statusFilter?.toLowerCase()
 
-      const matchesClass =
-        classFilter === "all-classes" ||
-        (student.class && student.class.toLowerCase() === classFilter?.toLowerCase())
-
-      return matchesSearch && matchesStatus && matchesClass
+      return matchesSearch && matchesStatus
     })
     .sort((a, b) => {
       if (!a.createdAt || !b.createdAt) return 0
@@ -80,12 +76,12 @@ export function StudentsTable({ initialData }: StudentsTableProps) {
 
   return (
     <div className="space-y-6">
-      {/* Action Header */}
+      {/* Header Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Students</h1>
           <p className="text-sm text-muted-foreground mt-0.5">
-            Manage all students enrolled in your school.
+            Manage all students registered in your school.
           </p>
         </div>
         <div className="flex items-center gap-2">
@@ -101,12 +97,12 @@ export function StudentsTable({ initialData }: StudentsTableProps) {
       {/* Stats Section */}
       <StudentStats students={studentsList} />
 
-      {/* Filter Toolbar matching UI screenshot */}
+      {/* Search & Filter Toolbar */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="relative w-full sm:w-80">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Search by name or email..."
+            placeholder="Search name, email, or phone..."
             className="pl-9 bg-background"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -114,19 +110,6 @@ export function StudentsTable({ initialData }: StudentsTableProps) {
         </div>
 
         <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-          {/* Class Filter */}
-          <Select value={classFilter} onValueChange={setClassFilter}>
-            <SelectTrigger className="w-[140px] bg-background">
-              <SelectValue placeholder="all-classes" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all-classes">all-classes</SelectItem>
-              <SelectItem value="Class A">Class A</SelectItem>
-              <SelectItem value="Class B">Class B</SelectItem>
-              <SelectItem value="Class C">Class C</SelectItem>
-            </SelectContent>
-          </Select>
-
           {/* Status Filter */}
           <Select value={statusFilter} onValueChange={setStatusFilter}>
             <SelectTrigger className="w-[130px] bg-background">
@@ -160,7 +143,7 @@ export function StudentsTable({ initialData }: StudentsTableProps) {
               <TableRow className="bg-muted/30">
                 <TableHead className="pl-6">Student</TableHead>
                 <TableHead>Email</TableHead>
-                <TableHead>Class</TableHead>
+                <TableHead>Phone</TableHead>
                 <TableHead>Status</TableHead>
                 <TableHead className="text-right pr-6">Actions</TableHead>
               </TableRow>
@@ -177,16 +160,16 @@ export function StudentsTable({ initialData }: StudentsTableProps) {
                       <TableCell className="text-muted-foreground text-xs sm:text-sm">
                         {s.user?.email || "—"}
                       </TableCell>
-                      <TableCell className="text-xs sm:text-sm text-foreground">
-                        {s.class || "—"}
+                      <TableCell className="text-muted-foreground text-xs sm:text-sm">
+                        {s.phone || "—"}
                       </TableCell>
                       <TableCell>
                         {status === "ACTIVE" ? (
-                          <Badge className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/50 dark:text-emerald-300 border-emerald-200/60">
+                          <Badge className="bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border-emerald-200">
                             Active
                           </Badge>
                         ) : (
-                          <Badge className="bg-rose-50 text-rose-700 hover:bg-rose-100 dark:bg-rose-950/50 dark:text-rose-300 border-rose-200/60">
+                          <Badge className="bg-rose-50 text-rose-700 hover:bg-rose-100 border-rose-200">
                             Inactive
                           </Badge>
                         )}

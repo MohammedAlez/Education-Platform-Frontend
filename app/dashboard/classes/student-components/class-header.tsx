@@ -1,34 +1,67 @@
 "use client"
 
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import { School, Users } from "lucide-react"
+import { StudentClassSummary } from "@/types/student-portal"
+import { cn } from "@/lib/utils"
 
-interface ClassHeaderProps {
-  className?: string
+interface ClassCardsGridProps {
+  classes: StudentClassSummary[]
+  selectedClassId: string
+  onSelectClass: (classId: string) => void
   studentCount: number
 }
 
-export function ClassHeader({ className = "Class A", studentCount = 28 }: ClassHeaderProps) {
+export function ClassHeader({
+  classes,
+  selectedClassId,
+  onSelectClass,
+  studentCount,
+}: ClassCardsGridProps) {
   return (
-    <Card className="border shadow-xs bg-gradient-to-r from-primary/5 via-background to-background">
-      <CardContent className="p-6 py-0 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div className="flex items-center gap-4">
-          <div className="p-3.5 rounded-xl bg-primary/10 text-primary">
-            <School className="h-7 w-7" />
-          </div>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">{className}</h1>
-            <p className="text-sm text-muted-foreground mt-0.5">
-              Overview of your registered class, subjects, and teaching faculty.
-            </p>
-          </div>
-        </div>
-        <Badge variant="secondary" className="w-fit text-sm py-1 px-3 gap-1.5 rounded-lg border">
-          <Users className="h-4 w-4 text-muted-foreground" />
-          <span className="font-semibold">{studentCount}</span> Students
-        </Badge>
-      </CardContent>
-    </Card>
+    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {classes.map((cls) => {
+        const isSelected = cls.id === selectedClassId
+        // Display active student count on selected card or fallback badge count
+        const displayCount = isSelected ? studentCount : null
+
+        return (
+          <Card
+            key={cls.id}
+            onClick={() => onSelectClass(cls.id)}
+            className={cn(
+              "cursor-pointer transition-all border shadow-xs hover:border-primary/50",
+              isSelected
+                ? "border-primary bg-gradient-to-r from-primary/5 via-background to-background ring-1 ring-primary"
+                : "bg-card hover:bg-muted/30"
+            )}
+          >
+            <CardContent className="p-5 flex items-center justify-between gap-4">
+              <div className="flex items-center gap-4">
+                <div
+                  className={cn(
+                    "p-3 rounded-xl shrink-0 transition-colors",
+                    isSelected
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-primary/10 text-primary"
+                  )}
+                >
+                  <School className="h-6 w-6" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold tracking-tight">{cls.name}</h2>
+                  <div className="flex items-center gap-1.5 text-xs text-muted-foreground mt-0.5">
+                    <Users className="h-3.5 w-3.5" />
+                    <span>
+                      {displayCount !== null ? `${displayCount} Students` : "Enrolled Class"}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )
+      })}
+    </div>
   )
 }

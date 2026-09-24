@@ -1,13 +1,11 @@
 
 import { getCurrentUser } from "@/lib/user"
-import { ClassHeader } from "./student-components/class-header"
-import { ClassSubjects } from "./student-components/class-subjects"
-import { ClassTeachers } from "./student-components/class-teachers"
 import { fetchWithAuth } from "@/lib/api"
 import { requireRole } from "@/lib/user"
 import { ClassesGrid } from "./admin-components//classes-grid"
 import { ClassItem, TeachingAssignment } from "@/types/class"
 import TeacherClassesPage from "./teacher-components/main-page"
+import { StudentMyClassPage } from "./student-components/main-page"
 
 
 export default async function Classes() {
@@ -59,17 +57,6 @@ async function AdminClassesPage() {
         initialClasses={initialClasses}
         initialAssignments={initialAssignments}
       />
-    </div>
-  )
-}
-
-
-function StudentMyClassPage() {
-  return (
-    <div className="space-y-6 p-2">
-      <ClassHeader className="Class A" studentCount={28} />
-      <ClassSubjects />
-      <ClassTeachers />
     </div>
   )
 }
