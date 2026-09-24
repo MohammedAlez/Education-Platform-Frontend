@@ -1,8 +1,9 @@
 import { CurrentUser, requireUser } from "@/lib/user"
 import { fetchWithAuth } from "@/lib/api"
 import { AccountProfileCard } from "./components/account-profile-card"
-import { AccountInfoForm } from "./components/account-info-form"
+// import { AccountInfoForm } from "./components/account-info-form"
 import { AccountSecurityForm } from "./components/account-security-form"
+import { AccountInfoForm } from "@/my-components/account-info-form"
 
 
 export default async function AccountPage() {
@@ -12,6 +13,8 @@ export default async function AccountPage() {
   const userData: {data:CurrentUser} = res.ok ? await res.json() : null
   const user = userData?.data
 
+  const role = user?.role
+  const profileId = user?.profile.id
   const firstName = user?.profile?.firstName || ""
   const lastName = user?.profile?.lastName || ""
   const fullName = `${firstName} ${lastName}`.trim() || user?.email || "User"
@@ -37,6 +40,8 @@ export default async function AccountPage() {
       />
 
       <AccountInfoForm
+        role={role}
+        profileId={profileId}
         initialFirstName={firstName}
         initialLastName={lastName}
         initialEmail={user?.email || ""}

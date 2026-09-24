@@ -14,8 +14,10 @@ export interface CurrentUser {
     id:string
     name:string
     status:"ACTIVE"|"UNACTIVE"
+    email: string
+    phone: string
   }
-  profile? : {
+  profile : {
     id: string
     firstName: string
     lastName: string

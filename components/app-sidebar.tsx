@@ -140,7 +140,7 @@ const data = {
       title: "My Account",
       url: "/dashboard/account",
       icon: <UserIcon size={30} />,
-      roles: ["TEACHER", "Student"],
+      roles: ["TEACHER", "STUDENT"],
     },
     // {
     //   title: "My Account",
