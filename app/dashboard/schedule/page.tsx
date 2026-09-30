@@ -1,5 +1,6 @@
 import { getCurrentUser } from "@/lib/user"
 import { AdminSchedulesPage } from "./admin-components/main-page"
+import { TeacherSchedulePage } from "./teacher-components/main-page"
 
 
 export default async function AttendancePage() {
@@ -10,7 +11,7 @@ export default async function AttendancePage() {
       if (userRole === "ADMIN") {
         return <AdminSchedulesPage />
       }else if (userRole === "TEACHER") {
-        return <div>teacher</div>
+        return <TeacherSchedulePage />
       }
       return <div>student</div>
 }
