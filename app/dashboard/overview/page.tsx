@@ -1,21 +1,7 @@
-import { KpiCards } from "./admin-components/kpi-cards"
-import { AttendanceOverview } from "./admin-components/attendance-overview"
-import { AttendanceChart } from "./admin-components/attendance-chart"
-import { RecentStudents } from "./admin-components/recent-students"
-import { RecentPayments } from "./admin-components/recent-payments"
-import { QuickActions } from "./admin-components/quick-actions"
 import { getCurrentUser } from "@/lib/user"
-import { RecentGradesCard } from "./teacher-components/recent-grades-card"
-import { PendingAttendanceCard } from "./teacher-components/pending-attendance-card"
-import { TodaysClasses } from "./teacher-components/todays-classes"
-import { TodaysClasses as StudentTodaysClasses } from "./student-components/todays-classes"
-import { TeacherStats } from "./teacher-components/teacher-stats"
-import { Role } from "@/lib/rbac"
-import { AttendanceBreakdownCard } from "./student-components/attendance-breakdown-card"
-import { StudentStatsCards } from "./student-components/student-stats-cards"
-import { RecentGradesCard as StudentRecentGradesCard } from "./teacher-components/recent-grades-card"
 import { AdminOverviewPage } from "./admin-components/main-admin-overview-page"
 import { TeacherDashboardPage } from "./teacher-components/main-page"
+import { StudentDashboardPage } from "./student-components/main-page"
 
 export default async function Overview() {
   const currentUser = await getCurrentUser()
@@ -30,42 +16,3 @@ export default async function Overview() {
   return <StudentDashboardPage />
 }
 
-
-function StudentDashboardPage() {
-  const studentName = "Ahmed"
-
-  return (
-    <div className="space-y-6 p-2">
-      {/* Top Banner */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">
-          Welcome back, {studentName} 👋
-        </h1>
-        <p className="text-sm text-muted-foreground mt-0.5">
-          Here's your academic overview.
-        </p>
-      </div>
-
-      {/* Overview Cards */}
-      <StudentStatsCards />
-
-      {/* Main Grid Section */}
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        {/* Today's Schedule */}
-        <div className="lg:col-span-1">
-          <StudentTodaysClasses />
-        </div>
-
-        {/* Recent Grades */}
-        <div className="lg:col-span-1">
-          <StudentRecentGradesCard />
-        </div>
-
-        {/* Attendance Breakdown */}
-        <div className="lg:col-span-1">
-          <AttendanceBreakdownCard />
-        </div>
-      </div>
-    </div>
-  )
-}

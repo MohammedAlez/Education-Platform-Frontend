@@ -1,5 +1,6 @@
 "use client"
 
+import { useApiQuery } from "@/hooks/use-api"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Table,
@@ -9,15 +10,17 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { Award } from "lucide-react"
+import { Award, Loader2 } from "lucide-react"
+import { RecentGradesResponse } from "@/types/student-overview"
 
-const recentGrades = [
-  { subject: "Mathematics", grade: "17 / 20" },
-  { subject: "Physics", grade: "15 / 20" },
-  { subject: "Computer Science", grade: "18 / 20" },
-]
+export function StudentRecentGradesCard() {
+  const { data, isLoading } = useApiQuery<RecentGradesResponse>(
+    ["student-recent-grades"],
+    "/student/me/grades/recent?limit=5"
+  )
 
-export function RecentGradesCard() {
+  const recentGrades = data?.data || []
+
   return (
     <Card className="border shadow-xs h-full">
       <CardHeader className="pb-3 border-b">
@@ -27,26 +30,36 @@ export function RecentGradesCard() {
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <Table>
-          <TableHeader>
-            <TableRow className="bg-muted/30">
-              <TableHead className="pl-6">Subject</TableHead>
-              <TableHead className="text-right pr-6">Grade</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {recentGrades.map((g, idx) => (
-              <TableRow key={idx}>
-                <TableCell className="font-medium pl-6 text-xs sm:text-sm">
-                  {g.subject}
-                </TableCell>
-                <TableCell className="text-right font-bold text-primary pr-6 text-xs sm:text-sm">
-                  {g.grade}
-                </TableCell>
+        {isLoading ? (
+          <div className="flex h-32 items-center justify-center">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        ) : recentGrades.length === 0 ? (
+          <p className="text-xs text-muted-foreground text-center py-8">
+            No recently submitted grades found.
+          </p>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow className="bg-muted/30">
+                <TableHead className="pl-6">Subject</TableHead>
+                <TableHead className="text-right pr-6">Grade</TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {recentGrades.map((g) => (
+                <TableRow key={g.id}>
+                  <TableCell className="font-medium pl-6 text-xs sm:text-sm capitalize">
+                    {g.subjectName}
+                  </TableCell>
+                  <TableCell className="text-right font-bold text-primary pr-6 text-xs sm:text-sm">
+                    {g.displayGrade || `${g.grade} / ${g.maxGrade}`}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
       </CardContent>
     </Card>
   )
