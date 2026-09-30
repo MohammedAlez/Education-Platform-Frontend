@@ -18,6 +18,7 @@ export default async function AdminTeachingAssignmentsPage() {
     console.error("Failed to fetch teaching assignments:", error)
   }
 
+  console.log("assignments are: ", initialAssignments)
   return (
     <div className="p-2">
       <TeachingAssignmentsGrid initialAssignments={initialAssignments} />

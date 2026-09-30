@@ -20,6 +20,7 @@ import {
   GraduationCapIcon,
   LayoutDashboardIcon,
   ListChecksIcon,
+  CalendarClock ,
   SchoolIcon,
   UsersIcon,
   SettingsIcon,
@@ -99,6 +100,12 @@ const data = {
       url: "/dashboard/assignments",
       icon: <ListChecksIcon size={30} />,
       roles: ["ADMIN"],
+    },
+    {
+      title: "Schedules",
+      url: "/dashboard/schedule",
+      icon: <CalendarClock size={30} />,
+      roles: ["ADMIN", 'TEACHER', "STUDENT"],
     },
     {
       title: "My Attendance",
