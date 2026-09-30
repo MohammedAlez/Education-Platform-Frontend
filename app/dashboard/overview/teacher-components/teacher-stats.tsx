@@ -1,42 +1,64 @@
-import { Card, CardContent } from "@/components/ui/card"
-import { School, Users, BookOpen, CalendarDays } from "lucide-react"
+"use client"
 
-const statsData = [
-  {
-    title: "My Classes",
-    value: "4",
-    icon: School,
-    bgColor: "bg-purple-50/60 dark:bg-purple-950/20",
-    borderColor: "border-purple-100 dark:border-purple-900/40",
-    iconColor: "text-purple-600 dark:text-purple-400",
-  },
-  {
-    title: "My Students",
-    value: "112",
-    icon: Users,
-    bgColor: "bg-sky-50/60 dark:bg-sky-950/20",
-    borderColor: "border-sky-100 dark:border-sky-900/40",
-    iconColor: "text-sky-500 dark:text-sky-400",
-  },
-  {
-    title: "Subjects",
-    value: "2",
-    icon: BookOpen,
-    bgColor: "bg-amber-50/60 dark:bg-amber-950/20",
-    borderColor: "border-amber-100 dark:border-amber-900/40",
-    iconColor: "text-amber-500 dark:text-amber-400",
-  },
-  {
-    title: "Today's Classes",
-    value: "3",
-    icon: CalendarDays,
-    bgColor: "bg-emerald-50/60 dark:bg-emerald-950/20",
-    borderColor: "border-emerald-100 dark:border-emerald-900/40",
-    iconColor: "text-emerald-600 dark:text-emerald-400",
-  },
-]
+import { useApiQuery } from "@/hooks/use-api"
+import { Card, CardContent } from "@/components/ui/card"
+import { School, Users, BookOpen, CalendarDays, Loader2 } from "lucide-react"
+import { TeacherOverviewStats } from "@/types/teacher-overview"
 
 export function TeacherStats() {
+  const { data: statsResponse, isLoading } = useApiQuery<
+    { data: TeacherOverviewStats } | TeacherOverviewStats
+  >(["teacher-overview-stats"], "/teacher/me/overview/stats")
+
+  const stats = (statsResponse as any)?.data || statsResponse
+
+  const statsData = [
+    {
+      title: "My Classes",
+      value: stats?.classesCount ?? 0,
+      icon: School,
+      bgColor: "bg-purple-50/60 dark:bg-purple-950/20",
+      borderColor: "border-purple-100 dark:border-purple-900/40",
+      iconColor: "text-purple-600 dark:text-purple-400",
+    },
+    {
+      title: "My Students",
+      value: stats?.studentsCount ?? 0,
+      icon: Users,
+      bgColor: "bg-sky-50/60 dark:bg-sky-950/20",
+      borderColor: "border-sky-100 dark:border-sky-900/40",
+      iconColor: "text-sky-500 dark:text-sky-400",
+    },
+    {
+      title: "Subjects",
+      value: stats?.subjectsCount ?? 0,
+      icon: BookOpen,
+      bgColor: "bg-amber-50/60 dark:bg-amber-950/20",
+      borderColor: "border-amber-100 dark:border-amber-900/40",
+      iconColor: "text-amber-500 dark:text-amber-400",
+    },
+    {
+      title: "Today's Classes",
+      value: stats?.todayClassesCount ?? 0,
+      icon: CalendarDays,
+      bgColor: "bg-emerald-50/60 dark:bg-emerald-950/20",
+      borderColor: "border-emerald-100 dark:border-emerald-900/40",
+      iconColor: "text-emerald-600 dark:text-emerald-400",
+    },
+  ]
+
+  if (isLoading) {
+    return (
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {[...Array(4)].map((_, i) => (
+          <Card key={i} className="h-24 flex items-center justify-center">
+            <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
+          </Card>
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
       {statsData.map((stat) => {
@@ -46,7 +68,7 @@ export function TeacherStats() {
             key={stat.title}
             className={`border shadow-none transition-all hover:shadow-xs ${stat.bgColor} ${stat.borderColor}`}
           >
-            <CardContent className="p-6 py-0">
+            <CardContent className="p-6 py-4">
               <div className="flex items-center justify-between space-x-4">
                 <div className="space-y-1">
                   <p className="text-sm font-medium text-muted-foreground">

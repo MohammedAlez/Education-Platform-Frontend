@@ -15,6 +15,7 @@ import { AttendanceBreakdownCard } from "./student-components/attendance-breakdo
 import { StudentStatsCards } from "./student-components/student-stats-cards"
 import { RecentGradesCard as StudentRecentGradesCard } from "./teacher-components/recent-grades-card"
 import { AdminOverviewPage } from "./admin-components/main-admin-overview-page"
+import { TeacherDashboardPage } from "./teacher-components/main-page"
 
 export default async function Overview() {
   const currentUser = await getCurrentUser()
@@ -29,30 +30,6 @@ export default async function Overview() {
   return <StudentDashboardPage />
 }
 
-
-function TeacherDashboardPage() {
-
-  return (
-    <div className="space-y-6 p-2">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight">Good morning, Ahmed 👋</h1>
-        <p className="text-sm text-muted-foreground">
-          Here's your teaching overview.
-        </p>
-      </div>
-
-      <TeacherStats />
-
-      <div className="grid gap-6 lg:grid-cols-2">
-        <TodaysClasses />
-        <PendingAttendanceCard />
-      </div>
-
-      <RecentGradesCard />
-    </div>
-  )
-
-}
 
 function StudentDashboardPage() {
   const studentName = "Ahmed"
